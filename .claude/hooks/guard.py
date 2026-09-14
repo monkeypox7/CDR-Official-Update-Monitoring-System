@@ -92,6 +92,34 @@ def check_file_tool(tool: str, tin: dict) -> None:
         block(f"{name} would exceed {MAX_LINES} lines. Split by responsibility.")
 
 
+def win_path(p: str) -> str:
+    m = re.match(r"^/([a-zA-Z])/(.*)", p)
+    return f"{m.group(1).upper()}:/{m.group(2)}" if m else p
+
+
+def effective_cwd(cmd: str, cwd: str) -> str:
+    """Directory git will run in: last `cd DIR` or `git -C DIR` before the git call."""
+    env = {k: a or b or c for k, a, b, c in re.findall(r"\b(\w+)=(?:\"([^\"]*)\"|'([^']*)'|(\S+))", cmd)}
+
+    def expand(p: str) -> str:
+        return re.sub(r"\$\{?(\w+)\}?", lambda m: env.get(m.group(1), m.group(0)), p)
+
+    git_at = re.search(r"\bgit\s", cmd)
+    head = cmd[: git_at.start()] if git_at else cmd
+    target = ""
+    for q, s, bare in re.findall(r"\bcd\s+(?:\"([^\"]+)\"|'([^']+)'|([^\s;&|]+))", head):
+        target = q or s or bare
+    m = re.search(r"\bgit\s+-C\s+(?:\"([^\"]+)\"|'([^']+)'|(\S+))", cmd)
+    if m:
+        target = m.group(1) or m.group(2) or m.group(3)
+    if not target:
+        return cwd
+    target = win_path(expand(target))
+    if not re.match(r"^([a-zA-Z]:|/|\\\\)", target) and cwd:
+        target = f"{cwd}/{target}"
+    return target
+
+
 def push_targets_main(cmd: str, cwd: str) -> bool:
     m = re.search(r"git\s+push\b(.*)", cmd)
     args = [a for a in (m.group(1).split("&&")[0].split(";")[0].split() if m else [])]
@@ -107,6 +135,7 @@ def push_targets_main(cmd: str, cwd: str) -> bool:
 
 def check_bash(tin: dict, cwd: str) -> None:
     cmd = tin.get("command", "")
+    cwd = effective_cwd(cmd, cwd)
     if re.search(r"git\s+push\b[^;&|]*(--force|\s-f\b|--force-with-lease|\s\+\S)", cmd):
         block("force push is forbidden.")
     if re.search(r"git\s+push\b[^;&|]*--(delete|mirror)|git\s+push\b[^;&|]*\s:\S", cmd):

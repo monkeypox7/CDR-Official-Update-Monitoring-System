@@ -14,6 +14,18 @@ from pathlib import Path
 MAX_LINES = 300
 
 
+def find_ruff(file: Path) -> str | None:
+    """Prefer the ruff inside the nearest .venv (worktree), else PATH."""
+    for parent in file.resolve().parents:
+        for rel in (".venv/Scripts/ruff.exe", ".venv/bin/ruff"):
+            cand = parent / rel
+            if cand.exists():
+                return str(cand)
+        if (parent / ".git").exists():
+            break
+    return shutil.which("ruff")
+
+
 def main() -> None:
     try:
         data = json.load(sys.stdin)
@@ -27,7 +39,7 @@ def main() -> None:
         sys.exit(0)
 
     problems = []
-    ruff = shutil.which("ruff")
+    ruff = find_ruff(file)
     if ruff:
         subprocess.run([ruff, "format", "-q", str(file)], check=False)
         res = subprocess.run(
@@ -38,7 +50,7 @@ def main() -> None:
 
     lines = len(file.read_text(encoding="utf-8").splitlines())
     if lines > MAX_LINES:
-        problems.append(f"{file.name} has {lines} lines (limit {MAX_LINES}). Split by responsibility.")
+        problems.append(f"{file.name} has {lines} lines (limit {MAX_LINES}). Split it.")
 
     if problems:
         print("post_edit.py:\n" + "\n".join(problems), file=sys.stderr)

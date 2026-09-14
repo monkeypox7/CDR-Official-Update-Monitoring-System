@@ -1,39 +1,44 @@
 ---
 name: ship
-description: Deliver a finished CDR Watch task - rebase on main, push the task branch, open a PR that closes the task issue, watch CI, fix failures, squash-merge, confirm the issue closed. Use when a task-session reaches its Finish step, or on "ship it", "open PR", "merge", "raise PR".
+description: Deliver a finished CDR Watch task - rebase on main, push the task branch, open or update the PR that closes the task issue, watch CI, fix failures, squash-merge, confirm the issue closed, remove the worktree. Use when a task-session reaches its Finish step, or on "ship it", "open PR", "merge", "raise PR".
 ---
 
 # Ship a task
 
-Preconditions: you are in the task worktree on branch `task/<n>-<slug>`, `cdr-scope-guard` verdict is `in-scope`, all work committed.
+Preconditions: work committed in `WT` (`/c/Users/Acer/Desktop/Internal Apps/cdrwatch-wt/<s>`) on `<branch>`; `cdr-scope-guard` verdict `in-scope`. Every command below runs as `cd "$WT" && ...`.
 
 ## 1. Sync
 ```
-git fetch origin
-git rebase origin/main
-pytest -q && ruff check . && ruff format --check .
+git fetch origin && git rebase origin/main
+.venv/Scripts/python -m pytest -q && .venv/Scripts/ruff check . && .venv/Scripts/ruff format --check .
 ```
-Rebase conflict -> only in files your task owns (PLAN.md 2.4)? resolve, rerun tests. Conflict in a file you do not own -> `git rebase --abort`, comment on the issue, stop and ask the owner.
+Conflict only in files you own -> resolve, rerun tests. Conflict in a file you do not own -> `git rebase --abort`, comment on the issue, stop.
 
-## 2. Push and open PR
+## 2. Push and PR
 ```
-git push -u origin HEAD
-gh pr create --base main --title "<type>(<scope>): <task title>" --body-file <scratchpad>/pr.md
+git push -u origin <branch>
+gh pr list --head <branch> --json number -q ".[0].number"     # existing PR?
 ```
-`pr.md` (plain ASCII):
+- No PR: `gh pr create --base main --head <branch> --title "<type>(<scope>): <task title>" --body-file <scratchpad>/pr.md`
+- Draft PR: update body `gh pr edit <n> --body-file <scratchpad>/pr.md`, then `gh pr ready <n>`.
+
+`pr.md` (ASCII):
 ```
 Closes #<issue>
 
 ## What
-- <files and one-line purpose each>
+- <file: purpose>
 
 ## Evidence
 - pytest: <last line>
 - ruff: <last line>
-- acceptance: <command> -> <key output lines>
+- acceptance: <command> -> <key lines>
 - cdr-scope-guard: in-scope
 
-## Risks / follow-ups
+## Notes for later sessions
+- <deviations from PLAN approved by owner, or "none">
+
+## Risks
 - <or "none">
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
@@ -41,26 +46,24 @@ Closes #<issue>
 
 ## 3. Watch CI
 ```
-gh pr checks --watch --fail-fast
+gh pr checks <n> --watch --fail-fast
 ```
-Failure -> `gh run view <run-id> --log-failed`, fix in the branch, commit, `git push`, watch again. After 3 failed fix attempts stop and comment the failing log excerpt on the issue.
+Failure -> `gh run view <run-id> --log-failed`, fix, commit, `git push`, watch again. 3 failed attempts -> comment the log excerpt on the issue and stop.
 
 ## 4. Merge
 ```
-gh pr merge --squash
+gh pr merge <n> --squash
 ```
-Never `--admin`. Do not use `--delete-branch` from a worktree (the repo auto-deletes the remote branch).
-Merge refused with "workflow scope" -> tell the owner to run `gh auth refresh -h github.com -s workflow`, then retry.
+Never `--admin`, never `--delete-branch` (repo auto-deletes the remote branch).
+- "branch is not up to date" -> repeat steps 1-3 (another session merged first).
+- "workflow scope" error -> tell the owner: run `gh auth refresh -h github.com -s workflow` in the VS Code terminal, then retry.
 
-## 5. Confirm
+## 5. Confirm and clean up
 ```
-gh issue view <issue> --json state -q .state     # expect CLOSED
+gh issue view <issue> --json state -q .state        # expect CLOSED; else gh issue close <issue> --comment "Done in #<n>"
+cd "/c/Users/Acer/Desktop/Internal Apps/CDR Official Update Monitoring System" && git worktree remove "../cdrwatch-wt/<s>" && git worktree prune
 ```
-Not closed -> `gh issue close <issue> --comment "Done in #<pr>"`.
+If `worktree remove` refuses (locked files from VS Code or venv), leave it and tell the owner; it is harmless.
 
-## 6. Report to owner
-PR url, merged commit, issue closed, and the cleanup commands for the owner to run from the main folder:
-```
-git worktree remove "../cdrwatch-wt/<session>"
-git pull
-```
+## 6. Report
+PR url, merge commit (`gh pr view <n> --json mergeCommit -q .mergeCommit.oid`), issue CLOSED, sessions now unblocked.
