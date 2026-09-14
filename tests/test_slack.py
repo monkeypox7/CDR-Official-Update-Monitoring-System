@@ -136,7 +136,7 @@ def test_health_broken_and_recovered():
 def test_digest_text():
     summary = RunSummary(date="2026-09-20", checked=15, informational=3, broken=("a", "b"))
     assert build_digest_blocks(summary)["text"] == (
-        "CDR Watch weekly - 2026-09-20: 15 sources checked, 3 informational changes, broken: a, b."
+        "CDR Watch weekly - 2026-09-20: 15 sources checked, broken: a, b."
     )
     empty = RunSummary(date="2026-09-20", checked=15, informational=0, broken=())
     assert build_digest_blocks(empty)["text"].endswith("broken: none.")

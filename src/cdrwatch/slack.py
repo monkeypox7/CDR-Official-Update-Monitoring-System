@@ -105,7 +105,7 @@ def build_digest_blocks(summary: RunSummary) -> dict:
     return _payload(
         [
             f"CDR Watch weekly - {summary.date}: {summary.checked} sources checked, "
-            f"{summary.informational} informational changes, broken: {_join(summary.broken)}."
+            f"broken: {_join(summary.broken)}."
         ]
     )
 

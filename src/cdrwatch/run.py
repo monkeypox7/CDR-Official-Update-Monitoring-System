@@ -4,7 +4,7 @@ import argparse
 import os
 import sys
 import time
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from cdrwatch import classify, config, diff, extract, fetch, slack, state, tracker
@@ -50,9 +50,10 @@ def diff_url(source_id: str) -> str | None:
 
 
 def is_digest_run(args: argparse.Namespace, now: datetime) -> bool:
-    # Sunday 23:00 UTC is Monday 09:00 AEST.
+    # Sunday 23:00 UTC is Monday 09:00 AEST. Shift back 12h so a delayed start after
+    # midnight UTC still counts as the Sunday run.
     scheduled = os.environ.get("GITHUB_EVENT_NAME") == "schedule"
-    return args.digest or (scheduled and now.weekday() == 6)
+    return args.digest or (scheduled and (now - timedelta(hours=12)).weekday() == 6)
 
 
 class Run:
@@ -66,12 +67,15 @@ class Run:
         self.changes = 0
         self.failures = 0
         self.informational = 0
+        self.slack_failed = 0
 
     def send(self, payload: dict) -> None:
         if self.args.dry_run:
             print(payload["text"])
             return
-        slack.post(payload, os.environ.get("SLACK_WEBHOOK_URL") or None)
+        webhook = os.environ.get("SLACK_WEBHOOK_URL") or None
+        if not slack.post(payload, webhook) and webhook:
+            self.slack_failed += 1
 
     def record_failure(self, source: Source, reason: str) -> None:
         self.failures += 1
@@ -134,8 +138,11 @@ class Run:
             self.save(source.id, text)
             self.alert(classify.tag(source, change, self.rules))
 
-    def finish(self, checked: int, digest: bool) -> None:
-        broken = tuple(sorted(k for k, m in self.meta.items() if m.broken_alerted))
+    def finish(self, sources: list[Source], digest: bool) -> int:
+        """Send the digest, save meta, write the summary. 1 if a Slack post failed."""
+        checked = len(sources)
+        ids = {s.id for s in sources}
+        broken = tuple(sorted(k for k, m in self.meta.items() if m.broken_alerted and k in ids))
         if digest:
             summary = RunSummary(self.today, checked, self.informational, broken)
             self.send(slack.build_digest_blocks(summary))
@@ -145,7 +152,11 @@ class Run:
             f"CDR Watch run {self.today}: {checked} sources checked, "
             f"{self.changes} changes, {self.failures} failures"
         )
-        write_summary([head, "", *self.lines])
+        lines = [head, "", *self.lines]
+        if self.slack_failed:
+            lines.append(f"SLACK DELIVERY FAILED: {self.slack_failed} message(s)")
+        write_summary(lines)
+        return 1 if self.slack_failed else 0
 
 
 def write_summary(lines: list[str]) -> None:
@@ -174,8 +185,7 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.state_dir).mkdir(parents=True, exist_ok=True)
     run = Run(args, rules, now.date().isoformat())
     run.process(sources)
-    run.finish(len(sources), is_digest_run(args, now))
-    return 0
+    return run.finish(sources, is_digest_run(args, now))
 
 
 if __name__ == "__main__":
