@@ -1,4 +1,5 @@
 import dataclasses
+from typing import get_args
 
 import pytest
 
@@ -7,6 +8,7 @@ from cdrwatch.models import (
     Alert,
     Change,
     KeywordRule,
+    Kind,
     RunSummary,
     Source,
     SourceMeta,
@@ -31,6 +33,19 @@ def test_source_defaults():
     assert src.min_chars == 200
     assert src.ignore_patterns == ()
     assert src.link_pattern is None
+    assert src.post_json is None
+
+
+def test_source_post_json_is_last_field_and_new_kinds_allowed():
+    assert dataclasses.fields(Source)[-1].name == "post_json"
+    assert set(get_args(Kind)) == {
+        "page",
+        "links",
+        "rss",
+        "legislation",
+        "occupations",
+        "schema_json",
+    }
 
 
 @pytest.mark.parametrize(

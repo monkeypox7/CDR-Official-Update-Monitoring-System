@@ -1,0 +1,157 @@
+# Watched official sources. Change only via the add-source skill.
+# Fetch modes, selectors and markers verified live on 2026-09-14
+# (docs/SPIKE.md, docs/DECISIONS.md D1-D5, source-checker runs).
+
+- id: ea-msa
+  name: "Engineers Australia - Migration skills assessment"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/migrants/migration-skills-assessment"
+  priority: Critical
+  fetch: http
+  selector: "main article"
+  required_marker: "Migration Skills Assessment"
+  min_chars: 500
+  ignore_patterns: ["^Share this page$", "^Last updated \\d{1,2} \\w+ \\d{4}$"]
+
+- id: ea-associate-changes
+  name: "Engineers Australia - Changes to Engineering Associate qualifications"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/migrants/migration-skills-assessment/changes-engineering-associate-qualifications"
+  priority: Critical
+  fetch: http
+  selector: "main article"
+  required_marker: "Engineering Associate"
+  min_chars: 400
+  ignore_patterns: ["^Share this page$", "^Last updated \\d{1,2} \\w+ \\d{4}$"]
+
+- id: ea-fees
+  name: "Engineers Australia - Assessment fees and additional services"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/migrants/migration-skills-assessment/assessment-fees-and-additional-services"
+  priority: Critical
+  fetch: http
+  selector: "main article"
+  required_marker: "fee"
+  min_chars: 300
+  ignore_patterns: ["^Share this page$", "^Last updated \\d{1,2} \\w+ \\d{4}$"]
+
+- id: ea-prepare-msa
+  name: "Engineers Australia - Prepare your migration skills assessment application"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/publications/prepare-your-migration-skills-assessment-application"
+  priority: Critical
+  fetch: http
+  selector: "main"
+  required_marker: "Migration Skills Assessment"
+  min_chars: 200
+
+- id: ea-competency-standard
+  name: "Engineers Australia - National competency standard for engineering"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/about-engineering/national-competency-standard-engineering"
+  priority: Critical
+  fetch: http
+  selector: "main article"
+  required_marker: "National Competency Standard for Engineering"
+  min_chars: 500
+  ignore_patterns: ["^Share this page$", "^Last updated \\d{1,2} \\w+ \\d{4}$"]
+
+- id: ea-occupational-categories
+  name: "Engineers Australia - Occupational categories"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/about-engineering/occupational-categories"
+  priority: High
+  fetch: http
+  selector: "main article"
+  required_marker: "occupational categories within the engineering profession"
+  min_chars: 500
+  ignore_patterns: ["^Share this page$", "^Last updated \\d{1,2} \\w+ \\d{4}$"]
+
+- id: ea-accreditation
+  name: "Engineers Australia - Accreditation"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/about-us/accreditation"
+  priority: High
+  fetch: http
+  selector: "main article"
+  required_marker: "Australian Engineering Accreditation Centre"
+  min_chars: 500
+  ignore_patterns: ["^Share this page$", "^Last updated \\d{1,2} \\w+ \\d{4}$"]
+
+- id: ea-accredited-programs
+  name: "Engineers Australia - Accredited programs"
+  kind: page
+  url: "https://www.engineersaustralia.org.au/publications/engineers-australia-accredited-programs"
+  priority: High
+  fetch: http
+  selector: "main"
+  required_marker: "Engineers Australia accredited programs"
+  min_chars: 200
+
+- id: ea-migrants-hub
+  name: "Engineers Australia - Migrants hub (new pages)"
+  kind: links
+  url: "https://www.engineersaustralia.org.au/migrants"
+  priority: High
+  fetch: http
+  selector: "main article"
+  required_marker: "migration"
+  min_chars: 200
+  link_pattern: "^https://www\\.engineersaustralia\\.org\\.au/migrants/[a-z0-9/-]+$"
+
+- id: ea-news
+  name: "Engineers Australia - News and media (new articles)"
+  kind: links
+  url: "https://www.engineersaustralia.org.au/news-and-media"
+  priority: High
+  fetch: http
+  selector: "main article"
+  required_marker: "news-and-media"
+  min_chars: 200
+  link_pattern: "^https://www\\.engineersaustralia\\.org\\.au/news-and-media/\\d{4}/\\d{2}/[a-z0-9-]+$"
+
+- id: ea-rss
+  name: "Engineers Australia - RSS feed"
+  kind: rss
+  url: "https://www.engineersaustralia.org.au/rss.xml"
+  priority: High
+  fetch: http
+  required_marker: "engineersaustralia.org.au"
+  min_chars: 200
+
+- id: ha-skilled-occupation-list
+  name: "Home Affairs - Skilled occupation list (Engineers Australia occupations)"
+  kind: occupations
+  url: "https://immi.homeaffairs.gov.au/_layouts/15/api/Data.aspx/GetSkillOccupation"
+  priority: Critical
+  fetch: http
+  required_marker: "312211"
+  min_chars: 200
+  post_json: '{"webUrl":"/work-in-australia","listname":"Occupations"}'
+
+- id: ha-skills-assessment
+  name: "Home Affairs - Skills assessment"
+  kind: schema_json
+  url: "https://immi.homeaffairs.gov.au/visas/working-in-australia/skills-assessment"
+  priority: Critical
+  fetch: http
+  required_marker: "skills assessment"
+  min_chars: 200
+
+- id: leg-migration-instruments
+  name: "Federal Register of Legislation - Migration instruments (latest)"
+  kind: legislation
+  url: "https://api.prod.legislation.gov.au/v1/titles?%24filter=contains(name,'Migration')&%24orderby=id%20desc&%24top=50&%24select=id,name,makingDate"
+  priority: High
+  fetch: http
+  required_marker: "Migration"
+  min_chars: 200
+
+- id: leg-migration-acts
+  name: "Federal Register of Legislation - Migration Acts (latest)"
+  kind: legislation
+  url: "https://api.prod.legislation.gov.au/v1/titles?%24filter=contains(name,'Migration')&%24orderby=year%20desc&%24top=50&%24select=id,name,makingDate"
+  priority: High
+  fetch: http
+  required_marker: "Migration"
+  min_chars: 200

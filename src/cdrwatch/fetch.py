@@ -1,8 +1,11 @@
 """HTTP fetching with browser headers, retries and Cloudflare challenge detection."""
 
 import time
+from collections.abc import Callable
 
 import requests
+
+from cdrwatch.models import Source
 
 BROWSER_HEADERS: dict[str, str] = {
     "User-Agent": (
@@ -25,12 +28,32 @@ class FetchFailure(Exception):
 
 def http_get(url: str, *, timeout: int = 30, retries: int = 3) -> str:
     """GET url and return the body. Backoff 2/4/8 s between attempts."""
+    return _request(lambda: requests.get(url, headers=BROWSER_HEADERS, timeout=timeout), retries)
+
+
+def http_post_json(url: str, body: str, *, timeout: int = 60, retries: int = 3) -> str:
+    """POST a JSON body and return the response body. Same retry rules as http_get."""
+    headers = {**BROWSER_HEADERS, "Content-Type": "application/json; charset=utf-8"}
+    data = body.encode("utf-8")
+    return _request(
+        lambda: requests.post(url, data=data, headers=headers, timeout=timeout), retries
+    )
+
+
+def fetch_source(source: Source) -> str:
+    """Fetch a source's raw body: POST when post_json is set, else GET."""
+    if source.post_json is not None:
+        return http_post_json(source.url, source.post_json)
+    return http_get(source.url)
+
+
+def _request(send: Callable[[], requests.Response], retries: int) -> str:
     reason = "network"
     for attempt in range(retries):
         if attempt:
             time.sleep(2**attempt)
         try:
-            resp = requests.get(url, headers=BROWSER_HEADERS, timeout=timeout)
+            resp = send()
         except requests.Timeout:
             reason = "timeout"
             continue

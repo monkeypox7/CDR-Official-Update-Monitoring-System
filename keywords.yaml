@@ -1,0 +1,131 @@
+# Keyword rules. Terms are case-insensitive regexes matched against added and
+# removed lines only (docs/PLAN.md section 4). Categories follow the business doc
+# section 2 topics; Critical = doc section 6 "Immediate action".
+
+# ---- Critical ----
+- category: Fees
+  terms: ["\\bfees?\\b", "fast track", "\\$\\s?\\d", "\\bAUD\\b", "charges?\\b"]
+  urgency: Critical
+  action: "Update pricing figures on all pages that show EA fees."
+  page_types: ["Pricing", "MSA guide"]
+
+- category: CDR evidence
+  terms: ["competency demonstration report", "\\bCDR\\b", "supporting documents?", "identity (document|evidence)", "document requirements?", "evidence"]
+  urgency: Critical
+  action: "Review CDR requirement and document checklist pages against the official wording."
+  page_types: ["CDR guide", "Document checklist"]
+
+- category: Career Episode
+  terms: ["career episodes?"]
+  urgency: Critical
+  action: "Review Career Episode guidance and samples against the official wording."
+  page_types: ["Career Episode guide"]
+
+- category: Summary Statement
+  terms: ["summary statements?"]
+  urgency: Critical
+  action: "Review Summary Statement guidance and templates against the official wording."
+  page_types: ["Summary Statement guide"]
+
+- category: ANZSCO/Occupations
+  terms: ["\\bANZSCO\\b", "\\bOSCA\\b", "\\b\\d{6}\\b", "occupation list", "skilled occupations?", "\\bMLTSSL\\b", "\\bSTSOL\\b", "\\bCSOL\\b", "\\bROL\\b"]
+  urgency: Critical
+  action: "Audit ANZSCO codes and occupation references on all occupation pages."
+  page_types: ["Occupation pages"]
+
+- category: Pathways
+  terms: ["pathways?", "non-accredited", "accredited qualifications?", "Washington Accord", "Sydney Accord", "Dublin Accord"]
+  urgency: Critical
+  action: "Review assessment pathway and eligibility pages against the official wording."
+  page_types: ["Pathway pages", "MSA guide"]
+
+- category: Deadlines/Interim arrangements
+  terms: ["deadlines?", "interim", "temporary arrangements?", "transition(al)?", "expir(y|es|ed)", "no longer (be )?accept"]
+  urgency: Critical
+  action: "Check dates and interim arrangement wording; do not present provisional rules as permanent."
+  page_types: ["News and updates", "MSA guide"]
+
+- category: Plagiarism/AI rules
+  terms: ["plagiari[sz]", "authorship", "artificial intelligence", "\\bAI\\b", "generative", "originality"]
+  urgency: Critical
+  action: "Review plagiarism, authorship and AI-content guidance against the official wording."
+  page_types: ["CDR guide", "Plagiarism and AI rules"]
+
+- category: Assessing authority
+  terms: ["assessing authorit(y|ies)", "relevant assessing authority"]
+  urgency: Critical
+  action: "Verify which assessing authority applies to each affected occupation."
+  page_types: ["Occupation pages"]
+
+- category: Engineering Associate
+  terms: ["engineering associates?", "draftsperson", "\\b312211\\b"]
+  urgency: Critical
+  action: "Review Engineering Associate and Civil Engineering Draftsperson pages against the official wording."
+  page_types: ["Engineering Associate pages"]
+
+# ---- High ----
+- category: CPD
+  terms: ["\\bCPD\\b", "continuing professional development"]
+  urgency: High
+  action: "Review CPD requirement guidance against the official wording."
+  page_types: ["CPD guide"]
+
+- category: English
+  terms: ["english language", "\\bIELTS\\b", "\\bPTE\\b", "\\bTOEFL\\b", "english test"]
+  urgency: High
+  action: "Review English-language requirement pages against the official wording."
+  page_types: ["English requirements"]
+
+- category: Accreditation/RTO
+  terms: ["accreditation", "\\bRTO\\b", "registered training organi[sz]ation", "provisional(ly)? accredited", "accredited programs?"]
+  urgency: High
+  action: "Review accreditation and RTO status references against the official list."
+  page_types: ["Accreditation pages"]
+
+- category: Professional Engineer
+  terms: ["professional engineers?"]
+  urgency: High
+  action: "Review Professional Engineer requirement pages against the official wording."
+  page_types: ["Professional Engineer pages"]
+
+- category: Engineering Technologist
+  terms: ["engineering technologists?"]
+  urgency: High
+  action: "Review Engineering Technologist requirement pages against the official wording."
+  page_types: ["Engineering Technologist pages"]
+
+- category: Engineering Manager
+  terms: ["engineering managers?"]
+  urgency: High
+  action: "Review Engineering Manager requirement pages against the official wording."
+  page_types: ["Engineering Manager pages"]
+
+- category: Processing times
+  terms: ["processing times?", "service levels?", "business days", "turnaround"]
+  urgency: High
+  action: "Update processing-time statements to match the official figures."
+  page_types: ["Processing times", "MSA guide"]
+
+- category: Skilled employment
+  terms: ["skilled employment", "employment assessment", "relevant employment"]
+  urgency: High
+  action: "Review skilled employment assessment guidance against the official wording."
+  page_types: ["Skilled employment pages"]
+
+- category: Review/Appeal
+  terms: ["\\breviews?\\b", "\\bappeals?\\b", "reassessment"]
+  urgency: High
+  action: "Review the review and appeal procedure pages against the official wording."
+  page_types: ["Review and appeal pages"]
+
+- category: Competency standards
+  terms: ["stage 1", "competency standards?", "\\bNCSE\\b", "competenc(y|ies)"]
+  urgency: High
+  action: "Review Stage 1 and competency standard references against the official standard."
+  page_types: ["Competency standard pages"]
+
+- category: MSA guidance
+  terms: ["migration skills assessment", "\\bMSA\\b", "booklet", "guidelines?"]
+  urgency: High
+  action: "Check whether the MSA booklet or guidance changed and update guide pages."
+  page_types: ["MSA guide"]
