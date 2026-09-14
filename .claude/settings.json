@@ -7,19 +7,42 @@
       "Bash(ruff check:*)",
       "Bash(ruff format:*)",
       "Bash(python -m cdrwatch.run:*)",
-      "Bash(python -m cdrwatch.fetch:*)",
+      "Bash(python -m cdrwatch.probe:*)",
       "Bash(pip install -r:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(git rebase origin/main:*)",
+      "Bash(git switch:*)",
+      "Bash(git branch:*)",
+      "Bash(git push -u origin:*)",
+      "Bash(git push origin:*)",
+      "Bash(git worktree list:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr comment:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue comment:*)",
+      "Bash(gh issue close:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh run watch:*)",
+      "Bash(gh workflow run:*)",
+      "Bash(gh workflow list:*)"
     ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
       "Bash(git push --force:*)",
-      "Bash(git reset --hard:*)"
+      "Bash(git reset --hard:*)",
+      "Bash(gh repo delete:*)"
     ]
   },
   "hooks": {
@@ -27,7 +50,7 @@
       {
         "matcher": "Edit|Write|MultiEdit|Bash",
         "hooks": [
-          { "type": "command", "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.py\"", "timeout": 10 }
+          { "type": "command", "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.py\"", "timeout": 20 }
         ]
       }
     ],

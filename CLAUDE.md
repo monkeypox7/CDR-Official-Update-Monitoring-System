@@ -20,7 +20,8 @@ If the code and the plan disagree, stop and ask. Do not silently pick one.
 - No renaming of interfaces defined in `docs/PLAN.md`. A needed change -> propose a plan edit first.
 - Never hand-edit `state/` (bot-written snapshots). Tests use `tests/fixtures/` and `tmp_path`.
 - Never commit the `.docx`, `.env`, or any webhook URL / token. Secrets only via GitHub secrets.
-- Never `git push --force`, never rewrite pushed history, never push without the owner asking.
+- Git: never commit or push to `main`, never force push, never `gh pr merge --admin`. Work only in your session worktree + `task/<n>-<slug>` branch; deliver via the `ship` skill (PR with `Closes #<issue>`, CI `test` green, squash merge).
+- Edit only files your session owns (`docs/PLAN.md` section 2.4). `CLAUDE.md`, `docs/`, `.claude/` are owner-only during build sessions.
 
 ## How to work
 - Read only what the task needs. `docs/PLAN.md` section for the task + files it names.
@@ -45,12 +46,14 @@ python -m cdrwatch.run --dry-run [--only SOURCE_ID] [--no-confirm] [--digest]
 1. `pytest -q` green and `ruff check .` clean - paste the real output.
 2. The task's acceptance command from `docs/PLAN.md` run - paste the real output.
 3. `cdr-scope-guard` agent run on the diff returns `in-scope` (or each finding fixed).
-4. Plan checkboxes ticked in `docs/PLAN.md`. Short recap: what changed, what was verified, what is next.
-Never report done without steps 1-3 evidence.
+4. `ship` skill completed: PR merged, CI green, task issue CLOSED. Short recap: PR url, evidence, what is unblocked.
+Never report done without steps 1-4 evidence. Progress lives in GitHub issues, not in plan checkboxes.
 
 ## Helpers in this repo
 - Skill `add-source` - the only way to add or change a watched source.
 - Skill `task-session` - start/finish ritual for every build session.
+- Skill `ship` - rebase, push, PR, watch CI, squash merge, confirm issue closed.
+- Skill `watch-run` - trigger/inspect the monitor workflow and report production health.
 - Agent `cdr-scope-guard` - reviews a diff against the plan task; flags scope creep, plan drift, missing tests.
 - Agent `source-checker` - live-checks one source (reachability, selector, marker, noise) and reports.
-- Hooks (`.claude/settings.json`) - block edits to `state/` and secrets, block AI SDK imports and unapproved deps, block files over 300 lines, auto-run ruff on edited Python.
+- Hooks (`.claude/settings.json`) - block edits to `state/` and secrets, AI SDK imports, unapproved deps, files over 300 lines, commits/pushes to `main`, force push, non-squash or admin merges, protection/secret API changes; auto-run ruff on edited Python.

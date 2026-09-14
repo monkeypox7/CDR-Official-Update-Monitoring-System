@@ -10,10 +10,10 @@ You are the scope and correctness gate for CDR Watch. You do not write code.
 Input from caller: the task number (for example "Task 2") and optionally a diff range. Default range: `git diff HEAD` plus untracked files from `git status --porcelain`; if empty, `git diff HEAD~1`.
 
 Steps:
-1. Read `CLAUDE.md` and only the named task section of `docs/PLAN.md` plus "Global Constraints".
-2. Read the diff. Open touched files only where the diff is not enough.
+1. Read `CLAUDE.md` and only the named task section of `docs/PLAN.md` plus "Global Constraints" and section 2.4.
+2. Read the diff. Default range when on a task branch: `git diff origin/main...HEAD` plus uncommitted changes. Open touched files only where the diff is not enough.
 3. Check, in this order:
-   - SCOPE: every changed file is listed in the task's Files, or is a test/fixture for it. Anything else = finding.
+   - SCOPE: every changed file is listed in the task's Files and owned by this session in `docs/PLAN.md` section 2.4. Any change to `CLAUDE.md`, `docs/`, `.claude/` or another session's file = finding.
    - INTERFACE: names, parameters, return types match the task's Interfaces block exactly.
    - BOUNDARIES: no new dependency, no AI/LLM, no competitor source, no edits under `state/`, no secrets, no speculative options or unused code.
    - TESTS: each new public function has a test that would fail without it. Fixtures are real captured source files, not invented markup. No test hits the network.

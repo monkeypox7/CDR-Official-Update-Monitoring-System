@@ -6,6 +6,7 @@ Rules mirror the hard boundaries in CLAUDE.md.
 
 import json
 import re
+import subprocess
 import sys
 
 ALLOWED_DEPS = {"requests", "beautifulsoup4", "lxml", "pyyaml", "playwright", "pytest", "ruff"}
@@ -15,6 +16,7 @@ BANNED_IMPORTS = re.compile(
     re.MULTILINE,
 )
 MAX_LINES = 300
+PROTECTED = {"main", "master"}
 
 
 def block(msg: str) -> None:
@@ -24,6 +26,30 @@ def block(msg: str) -> None:
 
 def norm(path: str) -> str:
     return path.replace("\\", "/")
+
+
+def git(cwd: str, *args: str) -> str:
+    try:
+        res = subprocess.run(
+            ["git", *args], cwd=cwd or None, capture_output=True, text=True, timeout=8
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+    return res.stdout.strip() if res.returncode == 0 else ""
+
+
+def remote_main_exists(cwd: str) -> bool:
+    try:
+        res = subprocess.run(
+            ["git", "ls-remote", "--heads", "origin", "main"],
+            cwd=cwd or None,
+            capture_output=True,
+            text=True,
+            timeout=8,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return True  # fail closed
+    return res.returncode != 0 or bool(res.stdout.strip())
 
 
 def new_content(tool: str, tin: dict) -> str:
@@ -66,12 +92,43 @@ def check_file_tool(tool: str, tin: dict) -> None:
         block(f"{name} would exceed {MAX_LINES} lines. Split by responsibility.")
 
 
-def check_bash(tin: dict) -> None:
+def push_targets_main(cmd: str, cwd: str) -> bool:
+    m = re.search(r"git\s+push\b(.*)", cmd)
+    args = [a for a in (m.group(1).split("&&")[0].split(";")[0].split() if m else [])]
+    refs = [a for a in args if not a.startswith("-")][1:]  # drop remote name
+    if not refs or any(r in ("HEAD", "@") for r in refs):
+        return git(cwd, "rev-parse", "--abbrev-ref", "HEAD") in PROTECTED
+    for r in refs:
+        dest = r.split(":")[-1].removeprefix("+").removeprefix("refs/heads/")
+        if dest in PROTECTED:
+            return True
+    return False
+
+
+def check_bash(tin: dict, cwd: str) -> None:
     cmd = tin.get("command", "")
-    if re.search(r"git\s+push\b.*(--force|-f\b|--force-with-lease)", cmd):
+    if re.search(r"git\s+push\b[^;&|]*(--force|\s-f\b|--force-with-lease|\s\+\S)", cmd):
         block("force push is forbidden.")
-    if re.search(r"git\s+push\b", cmd):
-        block("push only when the owner asks in chat; ask, then the owner runs or approves it.")
+    if re.search(r"git\s+push\b[^;&|]*--(delete|mirror)|git\s+push\b[^;&|]*\s:\S", cmd):
+        block("deleting or mirroring remote refs is forbidden.")
+    if re.search(r"git\s+push\b", cmd) and push_targets_main(cmd, cwd):
+        if remote_main_exists(cwd):
+            block("main is protected. Push a task branch and open a PR (ship skill).")
+    if re.search(r"git\s+commit\b", cmd):
+        if git(cwd, "rev-parse", "--abbrev-ref", "HEAD") in PROTECTED and remote_main_exists(cwd):
+            block("do not commit on main. Work in the task worktree branch.")
+    if re.search(r"git\s+(reset\s+--hard|clean\s+-\w*f|checkout\s+--\s+\.|restore\s+\.)", cmd):
+        block("destructive git command. Ask the owner.")
+    if re.search(r"gh\s+pr\s+merge\b", cmd):
+        if "--admin" in cmd:
+            block("--admin bypasses branch protection. Wait for CI.")
+        if "--squash" not in cmd:
+            block("merge with --squash only.")
+    if re.search(r"gh\s+(repo\s+(delete|archive|rename)|release\s+delete)\b", cmd):
+        block("repo-level destructive gh command. Owner only.")
+    if re.search(r"gh\s+api\b", cmd) and re.search(r"(-X|--method)\s*(DELETE|PUT|PATCH|POST)", cmd):
+        if re.search(r"protection|rulesets|/collaborators|/keys|/hooks|/secrets", cmd):
+            block("changing repo protection, access, hooks or secrets is owner only.")
     throwaway = re.search(r"scratchpad|[\\/]Temp[\\/]", cmd, re.IGNORECASE)
     if not throwaway and re.search(
         r"\bpip\s+install\b(?!\s+(-r|--requirement|-e\s+\.|--upgrade\s+pip))", cmd
@@ -91,7 +148,7 @@ def main() -> None:
     if tool in ("Write", "Edit", "MultiEdit"):
         check_file_tool(tool, tin)
     elif tool == "Bash":
-        check_bash(tin)
+        check_bash(tin, data.get("cwd", ""))
     sys.exit(0)
 
 
