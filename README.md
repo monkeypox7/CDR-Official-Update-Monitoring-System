@@ -40,7 +40,7 @@ Each changed line is tagged with categories from `keywords.yaml`. The highest
 matched category sets the urgency:
 
 - Critical or High: Slack alert + tracker issue.
-- No keyword match: Informational. No alert; counted in the weekly digest.
+- No keyword match: Informational. No alert; listed in the Actions job summary only.
 
 Example (the fee figures are test data, not real EA fees):
 
@@ -64,7 +64,10 @@ Verify the official page before changing site content.
 - Other messages:
   - `[SOURCE BROKEN] <name> - failed 3 runs in a row (<reason>). <url>`
   - `[SOURCE RECOVERED] <name> - fetching normally again. <url>`
-  - `CDR Watch weekly - <date>: <n> sources checked, <n> informational changes, broken: <ids or none>.`
+  - `CDR Watch weekly - <date>: <n> sources checked, broken: <ids or none>.`
+- If a webhook is set and Slack rejects a message, the run still saves state and
+  opens tracker issues, then prints `SLACK DELIVERY FAILED: <n> message(s)` and
+  fails (red run), so GitHub emails the owner.
 
 ## Connect Slack
 

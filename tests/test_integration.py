@@ -28,7 +28,8 @@ class Harness:
         self.issues: list = []
         self.sleeps: list[float] = []
         monkeypatch.setattr(fetch, "fetch_source", self.fetch)
-        monkeypatch.setattr(slack, "post", lambda payload, url: self.posts.append(payload))
+        self.post_ok = True
+        monkeypatch.setattr(slack, "post", self.post)
         monkeypatch.setattr(tracker, "open_issue", self.open_issue)
         monkeypatch.setattr(run.time, "sleep", self.sleeps.append)
         monkeypatch.delenv("GITHUB_EVENT_NAME", raising=False)
@@ -41,6 +42,10 @@ class Harness:
         if source.id in self.failing:
             raise FetchFailure("http_503")
         return self.overrides.get(source.id) or fixture_text(source)
+
+    def post(self, payload, url) -> bool:
+        self.posts.append(payload)
+        return self.post_ok
 
     def open_issue(self, alert, repo, token, diff_url):
         self.issues.append(alert)
@@ -151,6 +156,52 @@ def test_digest_flag_posts_one_digest(h):
     h.main("--only", "ea-fees")
     h.main("--only", "ea-fees", "--digest")
     assert len(h.posts) == 1
+
+
+def test_slack_delivery_failure_exits_1_after_issue_and_state_saved(h, monkeypatch, capsys):
+    h.main()
+    capsys.readouterr()
+    monkeypatch.setenv("SLACK_WEBHOOK_URL", "https://hooks.slack.test/x")
+    h.overrides["ea-fees"] = edited_fees()
+    h.post_ok = False
+    assert h.main() == 1
+    assert len(h.posts) == 1 and len(h.issues) == 1
+    assert "$999" in (h.state_dir / "ea-fees.txt").read_text(encoding="utf-8")
+    out = capsys.readouterr().out
+    assert "SLACK DELIVERY FAILED: 1 message(s)" in out
+    assert "15 sources checked, 1 changes, 0 failures" in out
+
+
+def test_no_webhook_is_not_a_delivery_failure(h):
+    h.main("--only", "ea-fees")
+    h.overrides["ea-fees"] = edited_fees()
+    h.post_ok = False
+    assert h.main("--only", "ea-fees") == 0
+
+
+@pytest.mark.parametrize(
+    ("iso", "expected"),
+    [
+        ("2026-09-20T23:00:00", True),  # Sunday on time
+        ("2026-09-21T02:30:00", True),  # Sunday run delayed past midnight
+        ("2026-09-21T23:00:00", False),  # Monday run
+        ("2026-09-19T23:00:00", False),  # Saturday run
+    ],
+)
+def test_scheduled_digest_survives_delayed_start(monkeypatch, iso, expected):
+    from datetime import UTC, datetime
+
+    monkeypatch.setenv("GITHUB_EVENT_NAME", "schedule")
+    args = run.parse_args([])
+    assert run.is_digest_run(args, datetime.fromisoformat(iso).replace(tzinfo=UTC)) is expected
+
+
+def test_digest_ignores_broken_sources_no_longer_configured(h):
+    h.state_dir.mkdir(parents=True)
+    meta = {"removed-source": state.SourceMeta(fail_count=5, broken_alerted=True)}
+    state.save_meta(h.state_dir, meta)
+    h.main("--only", "ea-fees", "--digest")
+    assert h.posts[-1]["text"].endswith("broken: none.")
 
 
 def test_unknown_snapshot_file_is_ignored(h):

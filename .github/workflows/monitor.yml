@@ -27,7 +27,7 @@ jobs:
       PYTHONPATH: src
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check state branch
         id: state
@@ -38,7 +38,7 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: steps.state.outputs.exists == 'true'
         with:
           ref: state
@@ -50,7 +50,7 @@ jobs:
           git init -b state state
           git -C state remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -59,13 +59,24 @@ jobs:
       - run: pip install -r requirements.txt
 
       - name: Run CDR Watch
+        id: run
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DIGEST_FLAG: ${{ inputs.digest && '--digest' || '' }}
-        run: python -m cdrwatch.run --state-dir state $DIGEST_FLAG
+        run: |
+          set +e
+          python -m cdrwatch.run --state-dir state $DIGEST_FLAG | tee run.log
+          code=${PIPESTATUS[0]}
+          if grep -q "^SLACK DELIVERY FAILED" run.log; then
+            echo "slack_failed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit $code
 
       - name: Commit state
+        # Still commit when the only failure was Slack delivery (state is saved);
+        # a crash skips the commit so the next run retries.
+        if: success() || steps.run.outputs.slack_failed == 'true'
         working-directory: state
         run: |
           gh auth setup-git
