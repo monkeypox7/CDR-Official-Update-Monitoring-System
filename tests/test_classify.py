@@ -90,13 +90,21 @@ def test_find_effective_date_day_month_year():
     assert find_effective_date(["$505", "Last updated 02 July 2026"]) == "02 July 2026"
 
 
+# Lines copied from tests/fixtures/raw/ea-accredited-programs.html and
+# leg-migration-instruments.json (id | name | makingDate[:10]).
+PDF_LINE = "/sites/default/files/2026-06/engineers-australia-accredited-programs-jun-26.pdf"
+LEG_LINE = (
+    "F2026L01149 | Migration (Arrangements for Child Visa Applications) Instrument 2026"
+    " | 2026-08-31"
+)
+
+
 def test_find_effective_date_iso():
-    lines = ["/sites/default/files/2026-06/fees.pdf", "2026-07-02 | Fees"]
-    assert find_effective_date(lines) == "2026-07-02"
+    assert find_effective_date([PDF_LINE, LEG_LINE]) == "2026-08-31"
 
 
 def test_find_effective_date_first_match_wins():
-    assert find_effective_date(["2026-07-02", "Last updated 02 July 2026"]) == "2026-07-02"
+    assert find_effective_date([LEG_LINE, "Last updated 02 July 2026"]) == "2026-08-31"
 
 
 def test_find_effective_date_not_stated():
