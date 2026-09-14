@@ -1,77 +1,43 @@
-"""Reachability probe for the v1 sources.
+"""Live probe: fetch and extract every source in sources.yaml.
 
-Usage: python -m cdrwatch.probe [--save-fixtures]
-Prints one line per source. Never raises. Exit 0.
+Usage: python -m cdrwatch.probe [--sources sources.yaml] [--save-fixtures]
+Prints "OK <id> <chars>" or "ERROR <id> <reason>" per source. Never raises. Exit 0.
 """
 
 import argparse
 from pathlib import Path
 
-from cdrwatch.fetch import FetchFailure, http_get, looks_like_challenge
-
-EA = "https://www.engineersaustralia.org.au"
-MSA = EA + "/migrants/migration-skills-assessment"
-HA = "https://immi.homeaffairs.gov.au/visas/working-in-australia"
-# $filter + $orderby=makingDate returns HTTP 400 (see docs/SPIKE.md); id desc works.
-LEG = (
-    "https://api.prod.legislation.gov.au/v1/titles"
-    "?%24filter=contains(name,'Migration')&%24orderby=id%20desc&%24top=50"
-    "&%24select=id,name,makingDate"
-)
-
-SOURCES: list[tuple[str, str]] = [
-    ("ea-msa", MSA),
-    ("ea-associate-changes", MSA + "/changes-engineering-associate-qualifications"),
-    ("ea-fees", MSA + "/assessment-fees-and-additional-services"),
-    (
-        "ea-prepare-msa",
-        EA + "/publications/prepare-your-migration-skills-assessment-application",
-    ),
-    ("ea-competency-standard", EA + "/about-engineering/national-competency-standard-engineering"),
-    ("ea-occupational-categories", EA + "/about-engineering/occupational-categories"),
-    ("ea-accreditation", EA + "/about-us/accreditation"),
-    ("ea-accredited-programs", EA + "/publications/engineers-australia-accredited-programs"),
-    ("ea-migrants-hub", EA + "/migrants"),
-    ("ea-news", EA + "/news-and-media"),
-    ("ea-rss", EA + "/rss.xml"),
-    ("ha-skilled-occupation-list", HA + "/skill-occupation-list"),
-    ("ha-skills-assessment", HA + "/skills-assessment"),
-    ("leg-migration-instruments", LEG),
-]
+from cdrwatch.config import load_sources
+from cdrwatch.extract import extract
+from cdrwatch.fetch import FetchFailure, fetch_source
+from cdrwatch.models import Source
 
 FIXTURES = Path("tests/fixtures/raw")
+EXTENSIONS = {"rss": "xml", "legislation": "json", "occupations": "json"}
 
 
-def extension(source_id: str) -> str:
-    if source_id.endswith("-rss"):
-        return "xml"
-    if source_id.startswith("leg-"):
-        return "json"
-    return "html"
-
-
-def probe_one(source_id: str, url: str, save: bool) -> str:
+def probe_one(source: Source, save: bool) -> str:
     try:
-        body = http_get(url)
+        body = fetch_source(source)
+        if save:
+            FIXTURES.mkdir(parents=True, exist_ok=True)
+            path = FIXTURES / f"{source.id}.{EXTENSIONS.get(source.kind, 'html')}"
+            path.write_text(body, encoding="utf-8", newline="")
+        text = extract(body, source)
     except FetchFailure as exc:
-        return f"{source_id} ERROR {exc.reason}"
+        return f"ERROR {source.id} {exc.reason}"
     except Exception as exc:  # probe must never raise
-        return f"{source_id} ERROR {type(exc).__name__}"
-    if save:
-        FIXTURES.mkdir(parents=True, exist_ok=True)
-        path = FIXTURES / f"{source_id}.{extension(source_id)}"
-        path.write_text(body, encoding="utf-8", newline="")
-    size = len(body.encode("utf-8"))
-    challenge = looks_like_challenge(body)
-    return f"{source_id} 200 {size} challenge={challenge} anzsco312211={'312211' in body}"
+        return f"ERROR {source.id} {type(exc).__name__}"
+    return f"OK {source.id} {len(text)}"
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m cdrwatch.probe")
+    parser.add_argument("--sources", default="sources.yaml")
     parser.add_argument("--save-fixtures", action="store_true")
     args = parser.parse_args(argv)
-    for source_id, url in SOURCES:
-        print(probe_one(source_id, url, args.save_fixtures), flush=True)
+    for source in load_sources(args.sources):
+        print(probe_one(source, args.save_fixtures), flush=True)
     return 0
 
 
