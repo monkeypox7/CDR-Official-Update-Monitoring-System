@@ -1,0 +1,78 @@
+Changes to migration skills assessment process for advanced diploma and associate degree qualifications
+Effective 1 September 2024, Engineers Australia has updated its approach to migration skills assessments for individuals with advanced diploma or associate degree qualifications from Registered Training Organisations (RTOs).
+Key changes
+Only qualifications accredited under the Dublin Accord (such as specific associate degrees or advanced diplomas) are now eligible for the accredited pathway.
+Applicants without an accredited qualification must now apply through the Competency Demonstration Report (CDR) pathway, which assesses individual competencies based on knowledge, skills and experience.
+Interim arrangement
+Engineers Australia has implemented an interim solution to the Migration Skills Assessment (MSA) Competency Demonstration Report (CDR) pathway for holders of non-accredited qualifications, specifically those seeking the occupation of Civil Engineering Draftsperson. This solution only applies for previous and current students. This solution will not be available after December 2026.
+If you hold a non-accredited advanced diploma or associate degree qualification (enrolled in or completed your program prior to 1 September 2024) and wish to apply for the occupation of Civil Engineering Draftsperson for migration purposes only, you may now submit your applications via MSA CDR pathway.
+In addition to the documentation described on
+MSA page
+, these changes require:
+two of the three career episodes to satisfactorily demonstrate competencies as civil engineering draftsperson based on:
+engagement with professional practice, which should include one or more of the following activities:
+relevant industry employment
+unpaid work experience (work placement)
+simulated work experience
+any other engagement with professional practice such as industry presentations, site visits, conferences, etc., or
+a major engineering project (more than 120 hours), including the assessment rubric), or
+two minor projects (up to 100 hours of work per project).
+If your career episode is based on your engagement with professional practice in a workplace, a reference letter from your employer or supervisor is required. It must be signed and dated, on official letterhead and contain:
+the dates and duration of your work experience or placement
+the name of the organisation or employer
+a description of your role and duties.
+additional documentation if you completed the program is less than 92 weeks and in includes a recognised prior learning (RPL), credit transfer (CT) or entry requirement (ER) component. You’ll need to submit documents that demonstrate:
+RPL: the list of units for which it was granted, and evidence of the assessment and approval the RTO undertook to grant it.
+CT: the list of units for which it was awarded, and the certificate and transcript (or certificate of attainment) for the qualification on which the CT is based.
+ER: the certificate and transcript (or statement of attainment) for the qualification that meets the RTO’s entry requirements for a program with a shorter duration.
+the inclusion of a
+summary statement
+(PDF) with your application, which can be used as a guide for the competency elements to be covered in your career episodes. For more information on the required competencies, refer to
+ANZSCO 312211 Civil Engineering Draftsperson
+.
+What this means for students
+We understand this change affects students who enrolled before 1 September 2024. The interim arrangement could provide those affected a suitable MSA outcome letter for migration purposes only, subject to a successful assessment outcome.
+This interim arrangement is only available to previous or current students who enrolled in or completed their program prior to 1 September 2024.
+Program accreditation for RTOs
+To help address the change, Engineers Australia is working with RTOs to support the timely progression of programs through accreditation. Timeframes vary based on demand and completeness of RTO submissions.
+Programs may receive provisional accreditation if there are no graduates available for review. Full accreditation can be granted after a formal review involving at least five graduates and assessment of their final-year work. The start date of accreditation applies to the year the students began their study.
+Provisionally accredited programs strengthen the quality of CDR-based assessments and provide greater confidence to assessors.
+Approved RTOs
+These RTOs have been granted accreditation for their Diploma and Advanced Diploma of Civil Construction Design implemented in line with the training plan recommended by Engineers Australia.
+Graduates of fully accredited programs are now eligible to apply for a MSA via the
+Australian qualification pathway
+.
+RTO
+Type
+Start date
+Lead College
+Provisional
+2026
+Oban College
+Provisional
+2026
+Albright Institute
+Provisional
+April 2026
+SITS College
+Provisional
+July 2026
+Australian College of Management and Innovation
+Full
+2023
+Support available
+Engineers Australia ran a series of webinars to guide RTOs through the accreditation process.
+Recordings are available on the
+Accreditation Community of Practice
+.
+Key documents for RTOs include:
+AMS-POL-01 Accreditation Principles
+Stage 1 Competency Standards – Engineering Associate
+AMS-STD-20 Accreditation Standard VET
+AMS-MAN-20 User Guide VET
+AMS-MAN-21 Procedures Manual VET
+For more information or to explore accreditation, visit our
+Accreditation Management System
+or
+contact us
+.

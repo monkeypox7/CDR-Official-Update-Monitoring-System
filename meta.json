@@ -1,0 +1,77 @@
+{
+  "ea-accreditation": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-accredited-programs": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-associate-changes": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-competency-standard": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-fees": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-migrants-hub": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-msa": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-news": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-occupational-categories": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-prepare-msa": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ea-rss": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ha-skilled-occupation-list": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "ha-skills-assessment": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "leg-migration-acts": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  },
+  "leg-migration-instruments": {
+    "broken_alerted": false,
+    "fail_count": 0,
+    "last_ok": "2026-09-14"
+  }
+}

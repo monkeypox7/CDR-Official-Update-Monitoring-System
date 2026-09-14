@@ -1,0 +1,131 @@
+National Competency Standard for Engineering
+The National Competency Standard for Engineering (NCSE) 2026 is a single, consolidated standard replacing the 2012 stage 1 and stage 2 standards. It will be implemented from 2027.
+The NCSE defines the threshold for entry-to-practice and independent practice in three engineering occupational categories:
+Professional Engineer
+Engineering Technologist
+Engineering Associate.
+The NCSE is the national benchmark for engineering practice and defines what it means to be an ethical and competent engineering professional in Australia.
+The NCSE was approved in July 2026,
+with a planned roll-out across accreditation and assessment pathways beginning
+in
+2027
+.
+The NCSE has been released prior to implementation to support the transition period, with the 2012 standards to remain in use until it is fully implemented.
+The purpose of the NCSE
+The NCSE has been designed to serve multiple purposes for:
+The community
+– to provide assurance about the competency of engineering professionals.
+The profession
+– as the framework for competency requirements for practice and credentialling.
+Education and training providers
+– to develop engineering programs and accreditation.
+Government
+– to provide assurance about the standard of engineering graduates and professionals.
+Industry
+– to provide a reference for engineering competency and capability development.
+Engineers Australia
+– to provide the standard for membership, accreditation and credentialling.
+What’s included
+The NCSE encompasses the main document – the standard – and a series of supporting documents. The standard contains the threshold competency requirements, and the supporting documents provide guidance on implementation for engineering program accreditation and assessment pathways.
+National Competency Standard for Engineering
+Read now
+User guide for applicants for entry-to-practice assessment
+Read now
+User guide for applicants for independent practice assessment
+Read now
+User guide for education providers
+Read now
+NCSE supplement on differentiating the occupational categories
+Read now
+Professional Standards Framework
+Read now
+Common questions
+What is the NCSE?
+The National Competency Standard for Engineering (NCSE) 2026 is a single, unified competency standard for the engineering profession in Australia.
+It replaces the six separate 2012 competency documents — three for stage 1 and three for stage 2 — with one integrated standard which defines the thresholds for entry-to-practice and independent practice across the three occupational categories: Professional Engineer, Engineering Technologist and Engineering Associate.
+The NCSE aligns with the International Engineering Alliance Graduate Attributes and Professional Competencies (IEA GAPC 2021) and is supported by a suite of companion documents. It provides the competency basis for accreditation, membership, credentialling, articulation, registration and migration skills assessment, and forms part of Engineers Australia’s broader
+Professional Standards Framework
+.
+What’s different to the 2012 standards?
+Under the 2012 standards, entry-to-practice competencies were organised into three broad areas – Knowledge and Skill Base, Engineering Application Ability, and Professional and Personal Attributes – with 16 elements of competency, set out in separate documents for each occupational category.
+Independent practice used a different structure of four units of competency – Personal Commitment, Obligation to Community, Value in the Workplace, and Technical Proficiency – again with 16 elements.
+The NCSE replaces this with a single, unified structure of 10 practice domains and 17 competency statements that are consistent across all three occupational categories and both career milestones.
+Differentiation between occupational categories is provided through occupational category profiles, which describe the expected conduct within each category in the Australian context.
+Why was the NCSE 2026 developed?
+Engineers Australia reviews its competencies periodically in accordance with its governance review practices and to continue its international accreditation and membership of the international accords and professional practice agreements under the International Engineering Alliance.
+The purpose of the current review has been to develop a single national engineering competency standard that:
+Supports a contemporary and future-fit engineering workforce for Australia.
+Underpins the high value of the engineering team to the Australian economy, skilled workforce and society.
+Supports and continues Engineers Australia’s long-standing credibility, leadership and authority, both nationally and internationally.
+Facilitates the career journeys of individual engineers in the occupational categories from entry-to-practice to independent practice and ultimately expert practice.
+Strengthens Engineers Australia’s
+Professional Standards Framework
+.
+Who was consulted about the change?
+A three-phase stakeholder consultation process, inclusive of detailed project planning and milestones, has been an integral part of the development of the NCSE:
+Phase one
+: Literature review and research, stakeholder and user feedback on existing competency standards, Engineers Australia membership of IEA GAPC Review Steering Committee.
+Phase two
+: Engineers Australia’s Professional Standards Committee (PSC) approved specifications for the review, IEA GAPC analysis, development of and PSC review of consultation drafts of NCSE, workshops and pilot testing of drafts with key stakeholders.
+Phase three
+: Release of and stakeholder feedback on NCSE Exposure Draft, development of final version of NCSE for Board approval. Development of full suite of stakeholder supported future-state documents.
+Different levels of consultation were conducted at different stages of the review process to ensure the NCSE is relevant for all users of the engineering competency standards in Australia.
+Feedback following release of the PSC approved
+Exposure Draft of the NCSE
+to stakeholders in March 2025 was overwhelmingly positive, with:
+More than 2000 individuals invited to participate; with the total number of recipients estimated as being more than 3000.
+More than 41,000 words of open-text feedback was received via the survey.
+A range of methodologies and analysis strategies were used to analyse the data to identify key themes, areas of consensus or concern, and recommendations for next steps. Filtering and coding were used for data organisation and theme discovery was performed. Sentiment analysis and polarisation checks were also conducted.
+Consultation supported development of the NCSE supporting documents.
+Education providers were closely consulted during the development of the
+NCSE 2026 competency user guide for education providers
+and Engineers Australia college and technical society chairs, divisional presidents and other key stakeholders were consulted during the development of the
+NCSE 2026 competency user guide for applicants for independent practice (Chartered) assessment
+.
+I’ve already been assessed as competent under the existing standards. How does this affect me?
+The NCSE does not affect existing credentials or membership status. If you've been successfully assessed under the 2012 standards, you're not required to be reassessed under the NCSE.
+I have an assessment in progress with Engineers Australia. How will this affect me?
+If you have an application or assessment in progress with Engineers Australia, it will continue to be assessed under the 2012 standards. Applications already underway will not be disrupted by the introduction of the NCSE.
+I'm a student studying an accredited engineering degree. Does this affect me?
+If you’re studying an accredited engineering program, you can continue with confidence. Accredited qualifications remain the primary pathway to Engineers Australia membership and to entry-to-practice recognition.
+Engineering programs will transition to being accredited against the NCSE progressively from 2027. Engineers Australia will work directly with education providers to manage that change. There is nothing you need to do differently as a student.
+What is the implementation timeline?
+The implementation of the NCSE will be phased. The NCSE document has been released in August 2026, with subsequent phases rolled out progressively.
+Indicative dates are:
+Accreditation: 2027, depending on the education provider's accreditation cycle
+Migration skills and entry-to-practice assessments: mid-2027
+Chartered assessment: mid-2027
+Statutory registration assessment: 2027, depending on the regulator's requirements.
+Does the NCSE change how overseas-qualified engineers are assessed?
+The NCSE will become the competency basis for migration skills assessment once implemented. Overseas-qualified engineers will be assessed against the same entry-to-
+practice competency statements and occupational category profiles as all other applicants.
+For employers, this means overseas-qualified engineers assessed under the NCSE will have met a competency standard that reflects contemporary engineering practice in the Australian context.
+Does the NCSE change the eligibility criteria for Engineers Australia membership?
+Engineers Australia membership eligibility will be assessed against the NCSE once it is implemented for assessments. The fundamental pathway to membership – demonstrating competency through an accredited qualification or direct assessment – remains unchanged.
+The membership grades of Graduate, Member and Fellow and their qualification requirements continue to apply.
+The NCSE updates the competency standard against which eligibility is assessed. It does not change membership policies or grade structures.
+How does the NCSE affect accreditation of tertiary engineering programs?
+The NCSE replaces the previous Stage 1 standards as the basis for accreditation of tertiary education programs.
+The
+NCSE 2026 competency user guide for education providers
+provides structured guidance on program development and on evidencing competency attainments for program accreditation.
+How does the NCSE affect the Chartered credential?
+The Chartered credential continues to be assessed at the independent practice level.
+Chartered is currently assessed against the Stage 2 standards. Under the NCSE, assessment will be conducted against independent practice competency statements with corresponding occupational category profiles defining the required threshold.
+The
+NCSE 2026 competency user guide for applicants for independent practice (Chartered) assessment
+provides guidance on how NCSE independent practice competencies can be evidenced and demonstrated.
+Why has the NCSE introduced engineering mindsets?
+The six introduced engineering mindsets:
+Systems approach
+Sustainability
+Risk-based
+Curiosity and inquisitiveness
+Inclusive and culturally responsive
+Human-centred
+make visible the ways engineers think and engage with the world. They are not new requirements to be assessed separately. They emerged from the occupational category profiles and are embedded within them.
+The mindsets provide a language for describing the professional orientations that underpin good engineering practice.
+Who can I contact for more information?
+If you have questions about the NCSE or how it may affect your membership, credentials or assessment, you can
+contact us
+.

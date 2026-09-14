@@ -1,0 +1,50 @@
+F2025L00906 | Migration (English Language Tests and Evidence Exemptions for Subclass 500 (Student) Visas) Instrument 2025 | 2025-08-05
+F2025L00907 | Migration (English Language Requirements for Subclass 485 (Temporary Graduate) Visas) Instrument 2025 | 2025-08-05
+F2025L00954 | Migration (International trade obligations relating to labour market testing) Amendment (CEPA) Determination 2025 | 2025-08-18
+F2025L01040 | Migration (Arrangements for Visitor (Class FA) visa applications) Amendment (Approved Destination Status) Instrument 2025 | 2025-09-01
+F2025L01066 | Migration (English Language Test Requirements for Subclass 482 Visas) Instrument 2025 | 2025-09-08
+F2025L01109 | Migration (Australian Values Statement for Public Interest Criterion 4019) Instrument 2025 | 2025-09-10
+F2025L01120 | Migration (Approval of Primary and Fall-back Reporting Systems—International Passenger Aircraft) Instrument 2025 | 2025-09-15
+F2025L01121 | Migration (Approval of Primary and Fall-back Reporting Systems—International Passenger Cruise Ships) Instrument 2025 | 2025-09-15
+F2025L01143 | Migration (Access to Movement Records) Instrument 2025 | 2025-09-10
+F2025L01156 | Migration (Specification of Class of Persons) Instrument 2025 | 2025-09-19
+F2025L01205 | Migration (Complying Investments) Instrument 2025 | 2025-09-26
+F2025L01218 | Migration (Disclosure of Information to Prescribed Bodies) Instrument 2025 | 2025-09-30
+F2025L01234 | Migration (Disclosure of Information to Prescribed International Organisations) Instrument 2025 | 2025-09-30
+F2025L01320 | Migration (2026 AFC Women's Asian Cup—Class of Persons for Nil VAC) Instrument 2025 | 2025-10-28
+F2025L01354 | Migration (2027 Men’s Rugby World Cup—Class of Persons for Nil VAC) Instrument 2025 | 2025-11-03
+F2025L01358 | Migration Amendment (Skilled Visa Reform Technical Measures) Instrument 2025 | 2025-11-03
+F2025L01389 | Migration Amendment (Skilled Visa Reform Technical Measures) Regulations 2025 | 2025-11-13
+F2025L01422 | Migration (Prohibited Things) Determination 2025 | 2025-11-24
+F2025L01435 | Migration (Arrangements for Protection, Refugee and Humanitarian Visas) Amendment (Expanding Internet Lodgement) Instrument 2025 | 2025-11-25
+F2025L01437 | Migration (Specification of Required Medical Assessment) Instrument 2025 | 2025-11-26
+F2025L01551 | Migration Amendment (2025 Measures No. 1) Regulations 2025 | 2025-12-11
+F2025L01554 | Migration Amendment (Personal Identifiers) Regulations 2025 | 2025-12-11
+F2026L00008 | Migration (Class of Persons for Nil VAC for Subclass 408 (Temporary Activity) – Brisbane 2032 Olympic and Paralympic Games) Instrument 2025 | 2026-01-06
+F2026L00112 | Migration (Temporary Visa Subclasses for PIC 4005 and 4007) Instrument 2026 | 2026-02-17
+F2026L00118 | Migration Agents Regulations 2026 | 2026-02-19
+F2026L00119 | Migration Agents Registration Application Charge Regulations 2026 | 2026-02-19
+F2026L00120 | Migration Legislation (Migration Agents) (Repeal and Consequential Amendments) Regulations 2026 | 2026-02-19
+F2026L00163 | Migration Amendment (Temporary Graduate Visa Application Charge) Regulations 2026 | 2026-02-19
+F2026L00216 | Immigration (Education) (Classes of Temporary Visas Eligible for English Courses) Determination 2026 | 2026-02-27
+F2026L00221 | Migration Amendment (Training Visas—Sponsorship Requirements) Regulations 2026 | 2026-03-05
+F2026L00244 | Migration Agents (CPD Activities, Approval of CPD Providers and CPD Provider Standards) Instrument 2026 | 2026-03-11
+F2026L00245 | Migration (Specified Courses and Exams for Registration as a Migration Agent) Instrument 2026 | 2026-03-11
+F2026L00280 | Migration (United Nations Security Council Resolutions) Instrument 2026 | 2026-03-05
+F2026L00329 | Migration Legislation Amendment (Annual Market Salary Rate) Instrument 2026 | 2026-03-23
+F2026L00369 | Migration Legislation Amendment (Assessing Authorities) Instrument 2026 | 2026-03-24
+F2026L00372 | Migration (Arrival Control) Determination 2026 | 2026-03-25
+F2026L00441 | Migration (Arrangements for Parent Visa Applications) Instrument 2026 | 2026-04-15
+F2026L00637 | Migration Legislation Amendment (Arrangements for Work and Holiday Visas—Luxembourg) Instrument 2026 | 2026-05-25
+F2026L00640 | Migration Amendment (Administrative Review of Student Visa Refusal Decisions) Regulations 2026 | 2026-05-28
+F2026L00724 | Migration (Granting of Contributory Parent Visas, Parent Visas and Other Family Visas During Financial Year 2025-26) Instrument 2026 | 2026-06-10
+F2026L00733 | Migration Amendment (Realigning the Community Support Program) Regulations 2026 | 2026-06-11
+F2026L00778 | Migration (Daily Maintenance Amount for Persons in Detention) Determination 2026 | 2026-06-19
+F2026L00876 | Migration Amendment (Working Holiday Maker Age Criteria) Regulations 2026 | 2026-06-25
+F2026L00877 | Migration (Nil VAC Arrangements and Other Matters) Instrument 2026 | 2026-06-26
+F2026L00878 | Migration (Arrangements for Subclass 417 (Working Holiday) Visa) Instrument 2026 | 2026-06-29
+F2026L00883 | Migration (Arrangements for Subclass 462 (Work and Holiday) Visa) Instrument 2026 | 2026-06-29
+F2026L00950 | Migration (Nil VAC Arrangements and Other Matters) Amendment (Rugby League World Cup 2026) Instrument 2026 | 2026-07-06
+F2026L00975 | Migration (Annual Applicant Limits for Subclass 202 (Global Special Humanitarian) Visas) Instrument 2026 | 2026-07-16
+F2026L00976 | Migration (Specification of Commonwealth Priorities for Subclass 202 (Global Special Humanitarian) Visas) Instrument 2026 | 2026-07-16
+F2026L01149 | Migration (Arrangements for Child Visa Applications) Instrument 2026 | 2026-08-31
