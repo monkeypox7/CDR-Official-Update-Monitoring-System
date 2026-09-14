@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Literal
 
-Kind = Literal["page", "links", "rss", "legislation"]
+Kind = Literal["page", "links", "rss", "legislation", "occupations", "schema_json"]
 Urgency = Literal["Critical", "High", "Informational"]
 URGENCY_RANK: dict[str, int] = {"Informational": 0, "High": 1, "Critical": 2}
 
@@ -21,6 +21,7 @@ class Source:
     min_chars: int = 200
     ignore_patterns: tuple[str, ...] = ()
     link_pattern: str | None = None
+    post_json: str | None = None
 
 
 @dataclass(frozen=True)

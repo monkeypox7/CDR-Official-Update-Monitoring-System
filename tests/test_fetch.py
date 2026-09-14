@@ -5,7 +5,15 @@ import pytest
 import requests
 
 from cdrwatch import fetch
-from cdrwatch.fetch import BROWSER_HEADERS, FetchFailure, http_get, looks_like_challenge
+from cdrwatch.fetch import (
+    BROWSER_HEADERS,
+    FetchFailure,
+    fetch_source,
+    http_get,
+    http_post_json,
+    looks_like_challenge,
+)
+from cdrwatch.models import Source
 
 RAW = Path(__file__).parent / "fixtures" / "raw"
 URL = "https://www.engineersaustralia.org.au/migrants"
@@ -90,3 +98,46 @@ def test_challenge_false_on_real_ea_pages(name):
     html = (RAW / name).read_text(encoding="utf-8")
     assert "challenge-platform" in html
     assert looks_like_challenge(html) is False
+
+
+def test_post_json_sends_body_with_json_content_type(no_sleep):
+    body = '{"webUrl":"/work-in-australia","listname":"Occupations"}'
+    with mock.patch.object(fetch.requests, "post", return_value=response(200, '{"d":1}')) as post:
+        assert http_post_json(URL, body) == '{"d":1}'
+    args, kwargs = post.call_args
+    assert args == (URL,)
+    assert kwargs["data"] == body.encode("utf-8")
+    assert kwargs["timeout"] == 60
+    assert kwargs["headers"]["Content-Type"] == "application/json; charset=utf-8"
+    assert kwargs["headers"]["User-Agent"] == BROWSER_HEADERS["User-Agent"]
+
+
+def test_post_json_retries_then_raises_http_reason(no_sleep):
+    with mock.patch.object(fetch.requests, "post", return_value=response(500)) as post:
+        with pytest.raises(FetchFailure) as exc:
+            http_post_json(URL, "{}")
+    assert exc.value.reason == "http_500"
+    assert post.call_count == 3
+    assert [c.args[0] for c in no_sleep.call_args_list] == [2, 4]
+
+
+def test_post_json_timeout_reason(no_sleep):
+    with mock.patch.object(fetch.requests, "post", side_effect=requests.Timeout()):
+        with pytest.raises(FetchFailure) as exc:
+            http_post_json(URL, "{}")
+    assert exc.value.reason == "timeout"
+
+
+def test_fetch_source_dispatches_on_post_json():
+    get_src = Source(id="a", name="A", kind="page", url=URL, priority="High", fetch="http")
+    post_src = Source(
+        id="b", name="B", kind="occupations", url=URL, priority="High", fetch="http", post_json="{}"
+    )
+    with (
+        mock.patch.object(fetch, "http_get", return_value="G") as get,
+        mock.patch.object(fetch, "http_post_json", return_value="P") as post,
+    ):
+        assert fetch_source(get_src) == "G"
+        assert fetch_source(post_src) == "P"
+    get.assert_called_once_with(URL)
+    post.assert_called_once_with(URL, "{}")
