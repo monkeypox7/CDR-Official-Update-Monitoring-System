@@ -1,0 +1,19 @@
+[project]
+name = "cdrwatch"
+version = "0.1.0"
+description = "Daily change monitor for official CDR, Engineers Australia, Home Affairs and Legislation sources."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+# Owner-only paths (docs/PLAN.md section 2.4); build sessions never edit them.
+extend-exclude = [".claude", "docs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
