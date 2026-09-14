@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from cdrwatch import config, fetch, run, slack, tracker
+from cdrwatch import config, fetch, run, slack, state, tracker
 from cdrwatch.fetch import FetchFailure
 
 ROOT = Path(__file__).parents[1]
@@ -171,3 +171,52 @@ def test_config_error_exits_1(h, tmp_path):
 
 def test_unknown_only_id_exits_1(h):
     assert h.main("--only", "no-such-source") == 1
+
+
+# Simulations for the v1 release gate (docs/PLAN.md section 1.5, Task 5).
+
+EA_FEES_URL = (
+    "https://www.engineersaustralia.org.au/migrants/migration-skills-assessment/"
+    "assessment-fees-and-additional-services"
+)
+
+SIMULATED_FEE_ALERT = "\n".join(
+    [
+        "[CRITICAL] Engineers Australia - Assessment fees and additional services",
+        "Change detected: 1 lines added, 1 removed. Tags: Fees",
+        "Previous: $505",
+        "New: $999",
+        "Effective date: Not stated in source",
+        "Who is affected: Applicants affected by: Fees",
+        "Website pages to review: Pricing, MSA guide",
+        "Recommended action: Update pricing figures on all pages that show EA fees.",
+        f"Official source: {EA_FEES_URL}",
+        "Tracker: https://github.com/owner/repo/issues/1"
+        " | Full diff: https://github.com/owner/repo/commits/state/ea-fees.txt",
+        "Verify the official page before changing site content.",
+    ]
+)
+
+
+def test_simulated_fee_change_renders_exact_slack_text(h, monkeypatch):
+    monkeypatch.setenv("GITHUB_SERVER_URL", "https://github.com")
+    h.main("--only", "ea-fees")
+    h.overrides["ea-fees"] = edited_fees()
+    assert h.main("--only", "ea-fees") == 0
+    assert len(h.posts) == 1 and len(h.issues) == 1
+    assert h.posts[0]["text"] == SIMULATED_FEE_ALERT
+    assert h.posts[0]["text"].isascii()
+
+
+def test_four_consecutive_failures_send_exactly_one_broken_alert(h):
+    h.main("--only", "ea-fees")
+    h.failing.add("ea-fees")
+    for _ in range(4):
+        assert h.main("--only", "ea-fees") == 0
+    assert [p["text"] for p in h.posts] == [
+        "[SOURCE BROKEN] Engineers Australia - Assessment fees and additional services"
+        f" - failed 3 runs in a row (http_503). {EA_FEES_URL}"
+    ]
+    meta = state.load_meta(h.state_dir)["ea-fees"]
+    assert meta.fail_count == 4 and meta.broken_alerted
+    assert h.issues == []
