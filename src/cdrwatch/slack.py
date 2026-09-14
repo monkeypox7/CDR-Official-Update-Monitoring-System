@@ -7,11 +7,10 @@ from typing import Literal
 
 import requests
 
+from cdrwatch import slack_blocks
 from cdrwatch.models import Alert, RunSummary, Source
+from cdrwatch.slack_blocks import MAX_CHARS, MAX_LINES
 
-MAX_LINES = 15
-MAX_CHARS = 300
-BLOCK_CHARS = 3000
 POST_RETRIES = 2
 VERIFY_LINE = "Verify the official page before changing site content."
 NOT_AVAILABLE = "not available"
@@ -64,31 +63,30 @@ def change_lines(alert: Alert) -> list[str]:
     ]
 
 
-def _escape(text: str) -> str:
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+def _ascii_tree(value):
+    """Apply to_ascii to every string inside a Block Kit structure."""
+    if isinstance(value, str):
+        return to_ascii(value)
+    if isinstance(value, list):
+        return [_ascii_tree(v) for v in value]
+    if isinstance(value, dict):
+        return {k: _ascii_tree(v) for k, v in value.items()}
+    return value
 
 
-def _payload(lines: list[str]) -> dict:
-    lines = [to_ascii(line) for line in lines]
-    chunks: list[str] = []
-    for line in (_escape(line) for line in lines):
-        if chunks and len(chunks[-1]) + 1 + len(line) <= BLOCK_CHARS:
-            chunks[-1] += "\n" + line
-        else:
-            chunks.append(line)
-    blocks = [{"type": "section", "text": {"type": "mrkdwn", "text": c}} for c in chunks]
-    return {"text": "\n".join(lines), "blocks": blocks}
+def _rich(lines: list[str], blocks: list[dict]) -> dict:
+    """Plain fallback text (notifications, job summary) + designed blocks."""
+    return {"text": "\n".join(to_ascii(line) for line in lines), "blocks": _ascii_tree(blocks)}
 
 
 def build_change_blocks(alert: Alert, issue_url: str | None, diff_url: str | None) -> dict:
-    return _payload(
-        [
-            f"[{alert.urgency.upper()}] {alert.source.name}",
-            *change_lines(alert),
-            f"Tracker: {issue_url or NOT_AVAILABLE} | Full diff: {diff_url or NOT_AVAILABLE}",
-            VERIFY_LINE,
-        ]
-    )
+    lines = [
+        f"[{alert.urgency.upper()}] {alert.source.name}",
+        *change_lines(alert),
+        f"Tracker: {issue_url or NOT_AVAILABLE} | Full diff: {diff_url or NOT_AVAILABLE}",
+        VERIFY_LINE,
+    ]
+    return _rich(lines, slack_blocks.change_blocks(alert, issue_url, diff_url))
 
 
 def build_health_blocks(
@@ -98,16 +96,15 @@ def build_health_blocks(
         text = f"[SOURCE BROKEN] {source.name} - failed 3 runs in a row ({reason}). {source.url}"
     else:
         text = f"[SOURCE RECOVERED] {source.name} - fetching normally again. {source.url}"
-    return _payload([text])
+    return _rich([text], slack_blocks.health_blocks(source, status, reason))
 
 
 def build_digest_blocks(summary: RunSummary) -> dict:
-    return _payload(
-        [
-            f"CDR Watch weekly - {summary.date}: {summary.checked} sources checked, "
-            f"broken: {_join(summary.broken)}."
-        ]
+    text = (
+        f"CDR Watch weekly - {summary.date}: {summary.checked} sources checked, "
+        f"broken: {_join(summary.broken)}."
     )
+    return _rich([text], slack_blocks.digest_blocks(summary))
 
 
 def post(payload: dict, webhook_url: str | None) -> bool:
