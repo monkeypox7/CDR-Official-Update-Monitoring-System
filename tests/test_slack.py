@@ -94,18 +94,71 @@ def test_line_and_length_limits():
     assert lines[start + 16].startswith("Effective date:")
 
 
-def test_blocks_are_sections_under_slack_limit_and_escaped():
+def block_texts(payload: dict) -> list[str]:
+    """Every text string inside the blocks (section text, fields, context, header)."""
+    out = []
+    for block in payload["blocks"]:
+        if "text" in block:
+            out.append(block["text"]["text"])
+        out += [f["text"] for f in block.get("fields", [])]
+        out += [e["text"] for e in block.get("elements", [])]
+    return out
+
+
+def test_blocks_respect_slack_limits_and_escape():
     side = tuple("a < b & c > d " + "y" * 290 for _ in range(15))
     payload = build_change_blocks(with_change(side, side), None, None)
-    assert len(payload["blocks"]) > 1
+    assert len(payload["blocks"]) <= 50
     for block in payload["blocks"]:
-        assert block["type"] == "section"
-        assert block["text"]["type"] == "mrkdwn"
-        assert len(block["text"]["text"]) <= 3000
-    joined = "\n".join(b["text"]["text"] for b in payload["blocks"])
+        if block["type"] == "header":
+            assert len(block["text"]["text"]) <= 150
+        if block["type"] == "section" and "text" in block:
+            assert len(block["text"]["text"]) <= 3000
+    joined = "\n".join(block_texts(payload))
     assert "a &lt; b &amp; c &gt; d" in joined
     assert "a < b & c > d" in payload["text"]
     assert joined.count("y" * 280) == 30
+
+
+def test_change_blocks_layout():
+    payload = build_change_blocks(ALERT, "https://gh.test/issues/9", "https://gh.test/diff")
+    types = [b["type"] for b in payload["blocks"]]
+    assert types[0] == "header" and types[-1] == "context"
+    assert payload["blocks"][0]["text"]["text"] == (
+        ":rotating_light: CRITICAL: official change detected"
+    )
+    joined = "\n".join(block_texts(payload))
+    assert f"*<{SOURCE.url}|{SOURCE.name}>*" in joined
+    assert "`Fees`" in joined
+    assert "*Effective date*\n1 October 2026" in joined
+    assert ">Fast Track fee $360" in joined and ">Fast Track fee $395" in joined
+    assert "<https://gh.test/issues/9|Tracker issue>" in joined
+    assert "<https://gh.test/diff|Full diff>" in joined
+    assert "Verify the official page before changing site content." in joined
+
+
+def test_change_blocks_omit_missing_links():
+    joined = "\n".join(block_texts(build_change_blocks(ALERT, None, None)))
+    assert "Tracker issue" not in joined and "Full diff" not in joined
+    assert "|Official source>" in joined
+
+
+def test_broken_blocks_plain_reason_and_run_link(monkeypatch):
+    monkeypatch.setenv("GITHUB_REPOSITORY", "o/r")
+    monkeypatch.setenv("GITHUB_RUN_ID", "42")
+    payload = build_health_blocks(SOURCE, "broken", "http_403")
+    joined = "\n".join(block_texts(payload))
+    assert payload["blocks"][0]["text"]["text"] == ":red_circle: Source broken"
+    assert "The website returned HTTP 403." in joined
+    assert "<https://github.com/o/r/actions/runs/42|Run log>" in joined
+
+
+def test_digest_blocks_list_broken_or_none(monkeypatch):
+    monkeypatch.delenv("GITHUB_REPOSITORY", raising=False)
+    broken = RunSummary(date="2026-09-20", checked=15, informational=0, broken=("ha-x",))
+    ok = RunSummary(date="2026-09-20", checked=15, informational=0, broken=())
+    assert "- `ha-x`" in "\n".join(block_texts(build_digest_blocks(broken)))
+    assert ":white_check_mark: None" in "\n".join(block_texts(build_digest_blocks(ok)))
 
 
 def test_output_is_ascii():
@@ -116,7 +169,7 @@ def test_output_is_ascii():
     payload = build_change_blocks(with_change((fancy,), ()), None, None)
     assert payload["text"].isascii()
     assert "New: \"Fee\" - now '$395'... caf?" in payload["text"]
-    assert all(b["text"]["text"].isascii() for b in payload["blocks"])
+    assert all(text.isascii() for text in block_texts(payload))
 
 
 def test_health_broken_and_recovered():
@@ -130,7 +183,7 @@ def test_health_broken_and_recovered():
         "[SOURCE RECOVERED] Engineers Australia - Assessment fees and additional services"
         " - fetching normally again. https://www.engineersaustralia.org.au/fees"
     )
-    assert broken["blocks"][0]["type"] == "section"
+    assert broken["blocks"][0]["type"] == "header"
 
 
 def test_digest_text():
