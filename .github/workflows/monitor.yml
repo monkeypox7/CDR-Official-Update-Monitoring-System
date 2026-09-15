@@ -2,13 +2,22 @@ name: monitor
 
 on:
   schedule:
-    - cron: "0 23 * * *"
+    # GitHub often starts on-the-hour crons late or drops them under load, so use
+    # off-peak minutes plus two backups. The guard job lets only the first
+    # successful scheduled run per Nepal calendar day do the work.
+    - cron: "17 22 * * *" # 04:02 Nepal time (primary)
+    - cron: "43 0 * * *" # 06:28 Nepal time (backup)
+    - cron: "23 3 * * *" # 09:08 Nepal time (backup)
   workflow_dispatch:
     inputs:
       digest:
-        description: Also post the weekly digest
+        description: Also post the weekly digest (ignored when the daily summary is on)
         type: boolean
         default: false
+      daily_summary:
+        description: Post the daily check-in message
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -20,7 +29,38 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - name: Skip if a scheduled run already succeeded today (Nepal time)
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          today=$(TZ=Asia/Kathmandu date +%F)
+          done_today=$(gh api \
+            "repos/${{ github.repository }}/actions/workflows/monitor.yml/runs?event=schedule&status=success&per_page=20" \
+            --jq "[.workflow_runs[]
+                   | select(.id != ${{ github.run_id }})
+                   | (.run_started_at | fromdateiso8601 + 20700 | strftime(\"%Y-%m-%d\"))
+                   | select(. == \"$today\")] | length")
+          echo "scheduled runs already successful on $today (Nepal): $done_today"
+          if [ "$done_today" -gt 0 ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
   monitor:
+    needs: guard
+    if: needs.guard.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -64,9 +104,10 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DIGEST_FLAG: ${{ inputs.digest && '--digest' || '' }}
+          DAILY_FLAG: ${{ (github.event_name == 'schedule' || inputs.daily_summary) && '--daily-summary' || '' }}
         run: |
           set +e
-          python -m cdrwatch.run --state-dir state $DIGEST_FLAG | tee run.log
+          python -m cdrwatch.run --state-dir state $DIGEST_FLAG $DAILY_FLAG | tee run.log
           code=${PIPESTATUS[0]}
           if grep -q "^SLACK DELIVERY FAILED" run.log; then
             echo "slack_failed=true" >> "$GITHUB_OUTPUT"

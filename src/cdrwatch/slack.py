@@ -99,6 +99,17 @@ def build_health_blocks(
     return _rich([text], slack_blocks.health_blocks(source, status, reason))
 
 
+def build_daily_blocks(
+    summary: RunSummary, alerted: int, failing: tuple[str, ...], checked_at: str
+) -> dict:
+    text = (
+        f"CDR Watch daily - {checked_at}: {summary.checked} sources checked, "
+        f"{alerted} official changes alerted, failing today: {_join(failing)}, "
+        f"broken: {_join(summary.broken)}."
+    )
+    return _rich([text], slack_blocks.daily_blocks(summary, alerted, failing, checked_at))
+
+
 def build_digest_blocks(summary: RunSummary) -> dict:
     text = (
         f"CDR Watch weekly - {summary.date}: {summary.checked} sources checked, "
