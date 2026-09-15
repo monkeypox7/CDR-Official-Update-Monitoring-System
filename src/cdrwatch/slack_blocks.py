@@ -161,6 +161,37 @@ def health_blocks(source: Source, status: str, reason: str) -> list[dict]:
     return [b for b in blocks if b]
 
 
+def daily_blocks(
+    summary: RunSummary, alerted: int, failing: tuple[str, ...], checked_at: str
+) -> list[dict]:
+    clear = not alerted and not failing and not summary.broken
+    icon = ":white_check_mark:" if clear else ":warning:"
+    if clear:
+        note = "All clear - no official change detected today."
+    elif alerted:
+        note = "See the alert message(s) above and the tracker."
+    else:
+        note = "Some sources could not be checked today; they are retried tomorrow."
+    failing_md = ", ".join(f"`{esc(s)}`" for s in failing) or "None"
+    blocks = [
+        header(f"{icon} CDR Watch - daily check"),
+        fields(
+            [
+                ("Checked at", esc(checked_at)),
+                ("Sources checked", str(summary.checked)),
+                ("Official changes alerted", str(alerted)),
+                ("Sources failing today", failing_md),
+            ]
+        ),
+        section("*Broken sources*\n" + "\n".join(f"- `{esc(s)}`" for s in summary.broken))
+        if summary.broken
+        else None,
+        links_row([("Run log", run_url()), ("Tracker", repo_url("/issues"))]),
+        context(f"{note}  |  {FOOTER}"),
+    ]
+    return [b for b in blocks if b]
+
+
 def digest_blocks(summary: RunSummary) -> list[dict]:
     broken = "\n".join(f"- `{esc(s)}`" for s in summary.broken) or ":white_check_mark: None"
     blocks = [

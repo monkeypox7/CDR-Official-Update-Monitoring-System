@@ -13,6 +13,11 @@ from cdrwatch.models import Alert, Change, RunSummary, Source, SourceMeta
 BROKEN_AFTER = 3
 CONFIRM_DELAY = 60
 ALERT_URGENCIES = ("Critical", "High")
+NEPAL_OFFSET = timedelta(hours=5, minutes=45)
+
+
+def nepal_time(now: datetime) -> str:
+    return (now + NEPAL_OFFSET).strftime("%d %b %Y, %I:%M %p") + " Nepal time"
 
 
 def parse_args(argv: list[str] | None) -> argparse.Namespace:
@@ -21,6 +26,7 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--only", metavar="ID")
     p.add_argument("--no-confirm", action="store_true")
     p.add_argument("--digest", action="store_true")
+    p.add_argument("--daily-summary", action="store_true")
     p.add_argument("--state-dir", default="state")
     p.add_argument("--sources", default="sources.yaml")
     p.add_argument("--keywords", default="keywords.yaml")
@@ -68,6 +74,7 @@ class Run:
         self.failures = 0
         self.informational = 0
         self.slack_failed = 0
+        self.failed_ids: list[str] = []
 
     def send(self, payload: dict) -> None:
         if self.args.dry_run:
@@ -79,6 +86,7 @@ class Run:
 
     def record_failure(self, source: Source, reason: str) -> None:
         self.failures += 1
+        self.failed_ids.append(source.id)
         self.lines.append(f"FAIL {source.id} {reason}")
         m = self.meta.setdefault(source.id, SourceMeta())
         m.fail_count += 1
@@ -138,13 +146,17 @@ class Run:
             self.save(source.id, text)
             self.alert(classify.tag(source, change, self.rules))
 
-    def finish(self, sources: list[Source], digest: bool) -> int:
-        """Send the digest, save meta, write the summary. 1 if a Slack post failed."""
+    def finish(self, sources: list[Source], digest: bool, checked_at: str = "") -> int:
+        """Send daily summary or digest, save meta, write the summary. 1 if a Slack post failed."""
         checked = len(sources)
         ids = {s.id for s in sources}
         broken = tuple(sorted(k for k, m in self.meta.items() if m.broken_alerted and k in ids))
-        if digest:
-            summary = RunSummary(self.today, checked, self.informational, broken)
+        summary = RunSummary(self.today, checked, self.informational, broken)
+        if self.args.daily_summary:
+            alerted = self.changes - self.informational
+            failing = tuple(sorted(self.failed_ids))
+            self.send(slack.build_daily_blocks(summary, alerted, failing, checked_at))
+        elif digest:
             self.send(slack.build_digest_blocks(summary))
         if not self.args.dry_run:
             state.save_meta(self.state_dir, self.meta)
@@ -185,7 +197,7 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.state_dir).mkdir(parents=True, exist_ok=True)
     run = Run(args, rules, now.date().isoformat())
     run.process(sources)
-    return run.finish(sources, is_digest_run(args, now))
+    return run.finish(sources, is_digest_run(args, now), nepal_time(now))
 
 
 if __name__ == "__main__":
