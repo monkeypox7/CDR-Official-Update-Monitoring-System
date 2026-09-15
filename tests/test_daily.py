@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 import pytest
 
 from cdrwatch import run
-from test_integration import Harness, edited_fees
+from test_integration import RAW, Harness, edited_fees
 
 
 @pytest.fixture
@@ -20,7 +20,7 @@ def test_daily_summary_posts_all_clear_on_quiet_day(h):
     text = h.posts[0]["text"]
     assert text.startswith("CDR Watch daily - ")
     assert "Nepal time: 1 sources checked, 0 official changes alerted" in text
-    assert "failing today: none, broken: none." in text
+    assert "minor changes: none, failing today: none, broken: none." in text
     assert h.posts[0]["blocks"][0]["text"]["text"] == ":white_check_mark: CDR Watch - daily check"
 
 
@@ -49,3 +49,13 @@ def test_nepal_time_format():
     assert run.nepal_time(datetime(2026, 9, 14, 22, 17, tzinfo=UTC)) == (
         "15 Sep 2026, 04:02 AM Nepal time"
     )
+
+
+def test_daily_summary_lists_minor_changes(h):
+    h.main("--only", "ea-msa")
+    raw = (RAW / "ea-msa.html").read_text(encoding="utf-8")
+    extra = "<p>Plain untagged sentence.</p></article>"
+    h.overrides["ea-msa"] = raw.replace("</article>", extra, 1)
+    h.main("--only", "ea-msa", "--daily-summary")
+    text = h.posts[-1]["text"]
+    assert "0 official changes alerted, minor changes: ea-msa," in text

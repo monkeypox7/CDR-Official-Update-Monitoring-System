@@ -162,7 +162,11 @@ def health_blocks(source: Source, status: str, reason: str) -> list[dict]:
 
 
 def daily_blocks(
-    summary: RunSummary, alerted: int, failing: tuple[str, ...], checked_at: str
+    summary: RunSummary,
+    alerted: int,
+    failing: tuple[str, ...],
+    checked_at: str,
+    minor: tuple[str, ...] = (),
 ) -> list[dict]:
     clear = not alerted and not failing and not summary.broken
     icon = ":white_check_mark:" if clear else ":warning:"
@@ -183,6 +187,12 @@ def daily_blocks(
                 ("Sources failing today", failing_md),
             ]
         ),
+        section(
+            "*Minor changes (no alert keyword matched)*\n"
+            + "\n".join(f"- `{esc(s)}`" for s in minor)
+        )
+        if minor
+        else None,
         section("*Broken sources*\n" + "\n".join(f"- `{esc(s)}`" for s in summary.broken))
         if summary.broken
         else None,
