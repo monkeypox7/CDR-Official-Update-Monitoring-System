@@ -100,14 +100,19 @@ def build_health_blocks(
 
 
 def build_daily_blocks(
-    summary: RunSummary, alerted: int, failing: tuple[str, ...], checked_at: str
+    summary: RunSummary,
+    alerted: int,
+    failing: tuple[str, ...],
+    checked_at: str,
+    minor: tuple[str, ...] = (),
 ) -> dict:
     text = (
         f"CDR Watch daily - {checked_at}: {summary.checked} sources checked, "
-        f"{alerted} official changes alerted, failing today: {_join(failing)}, "
-        f"broken: {_join(summary.broken)}."
+        f"{alerted} official changes alerted, minor changes: {_join(minor)}, "
+        f"failing today: {_join(failing)}, broken: {_join(summary.broken)}."
     )
-    return _rich([text], slack_blocks.daily_blocks(summary, alerted, failing, checked_at))
+    blocks = slack_blocks.daily_blocks(summary, alerted, failing, checked_at, minor)
+    return _rich([text], blocks)
 
 
 def build_digest_blocks(summary: RunSummary) -> dict:

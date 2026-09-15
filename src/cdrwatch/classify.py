@@ -20,9 +20,18 @@ def find_effective_date(lines: Iterable[str]) -> str:
     return NOT_STATED
 
 
+def _variants(lines: tuple[str, ...]) -> list[str]:
+    """Each line plus a copy with hyphens/underscores as spaces, so file names such as
+    "engineers-australia-accredited-programs-sep-26" match "accredited programs"."""
+    out = list(lines)
+    out += [re.sub(r"[-_]+", " ", line) for line in lines if re.search(r"[-_]", line)]
+    return out
+
+
 def _matches(rule: KeywordRule, lines: tuple[str, ...]) -> bool:
     patterns = [re.compile(term, re.IGNORECASE) for term in rule.terms]
-    return any(p.search(line) for p in patterns for line in lines)
+    candidates = _variants(lines)
+    return any(p.search(line) for p in patterns for line in candidates)
 
 
 def tag(source: Source, change: Change, rules: list[KeywordRule]) -> Alert:

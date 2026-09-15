@@ -57,6 +57,19 @@ def test_term_in_removed_line_matches():
     assert tag(SOURCE, change, [rule]).urgency == "Critical"
 
 
+def test_hyphenated_file_name_matches_spaced_term():
+    # Real change seen 15 Sep 2026 on ea-accredited-programs (PDF edition jun-26 -> sep-26).
+    change = Change(
+        source_id="ea-accredited-programs",
+        added=("engineers-australia-accredited-programs-sep-26 (PDF)",),
+        removed=("engineers-australia-accredited-programs-jun-26 (PDF)",),
+    )
+    rule = KeywordRule(
+        "Accreditation/RTO", ("accredited programs?",), "High", "Review.", ("Accreditation pages",)
+    )
+    assert tag(SOURCE, change, [rule]).urgency == "High"
+
+
 def test_terms_are_case_insensitive():
     change = Change(source_id="ea-fees", added=("Migration skills assessment fees",), removed=())
     rule = KeywordRule("Fees", ("FEES",), "Critical", "Update fees.", ("Pricing",))

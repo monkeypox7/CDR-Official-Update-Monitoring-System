@@ -75,6 +75,7 @@ class Run:
         self.informational = 0
         self.slack_failed = 0
         self.failed_ids: list[str] = []
+        self.minor_ids: list[str] = []
 
     def send(self, payload: dict) -> None:
         if self.args.dry_run:
@@ -112,6 +113,7 @@ class Run:
         self.lines.append(f"CHANGE {sid} {alert.urgency} {', '.join(alert.categories) or '-'}")
         if alert.urgency not in ALERT_URGENCIES:
             self.informational += 1
+            self.minor_ids.append(sid)
             return
         url = diff_url(sid)
         issue = None
@@ -155,7 +157,8 @@ class Run:
         if self.args.daily_summary:
             alerted = self.changes - self.informational
             failing = tuple(sorted(self.failed_ids))
-            self.send(slack.build_daily_blocks(summary, alerted, failing, checked_at))
+            minor = tuple(sorted(self.minor_ids))
+            self.send(slack.build_daily_blocks(summary, alerted, failing, checked_at, minor))
         elif digest:
             self.send(slack.build_digest_blocks(summary))
         if not self.args.dry_run:
