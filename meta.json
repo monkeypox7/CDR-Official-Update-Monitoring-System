@@ -2,76 +2,76 @@
   "ea-accreditation": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-accredited-programs": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-associate-changes": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-competency-standard": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-fees": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-migrants-hub": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-msa": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-news": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-occupational-categories": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-prepare-msa": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ea-rss": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ha-skilled-occupation-list": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "ha-skills-assessment": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "leg-migration-acts": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   },
   "leg-migration-instruments": {
     "broken_alerted": false,
     "fail_count": 0,
-    "last_ok": "2026-09-16"
+    "last_ok": "2026-09-17"
   }
 }
