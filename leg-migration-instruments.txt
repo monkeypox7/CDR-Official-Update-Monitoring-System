@@ -1,5 +1,3 @@
-F2025L00906 | Migration (English Language Tests and Evidence Exemptions for Subclass 500 (Student) Visas) Instrument 2025 | 2025-08-05
-F2025L00907 | Migration (English Language Requirements for Subclass 485 (Temporary Graduate) Visas) Instrument 2025 | 2025-08-05
 F2025L00954 | Migration (International trade obligations relating to labour market testing) Amendment (CEPA) Determination 2025 | 2025-08-18
 F2025L01040 | Migration (Arrangements for Visitor (Class FA) visa applications) Amendment (Approved Destination Status) Instrument 2025 | 2025-09-01
 F2025L01066 | Migration (English Language Test Requirements for Subclass 482 Visas) Instrument 2025 | 2025-09-08
@@ -48,3 +46,5 @@ F2026L00950 | Migration (Nil VAC Arrangements and Other Matters) Amendment (Rugb
 F2026L00975 | Migration (Annual Applicant Limits for Subclass 202 (Global Special Humanitarian) Visas) Instrument 2026 | 2026-07-16
 F2026L00976 | Migration (Specification of Commonwealth Priorities for Subclass 202 (Global Special Humanitarian) Visas) Instrument 2026 | 2026-07-16
 F2026L01149 | Migration (Arrangements for Child Visa Applications) Instrument 2026 | 2026-08-31
+F2026L01255 | Migration (Designated Areas) Instrument 2026 | 2026-09-18
+F2026L01261 | Migration Legislation Amendment (Arrangements for Child Visa Applications) Instrument 2026 | 2026-09-19
