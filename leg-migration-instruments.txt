@@ -1,4 +1,3 @@
-F2025L01120 | Migration (Approval of Primary and Fall-back Reporting Systems—International Passenger Aircraft) Instrument 2025 | 2025-09-15
 F2025L01121 | Migration (Approval of Primary and Fall-back Reporting Systems—International Passenger Cruise Ships) Instrument 2025 | 2025-09-15
 F2025L01143 | Migration (Access to Movement Records) Instrument 2025 | 2025-09-10
 F2025L01156 | Migration (Specification of Class of Persons) Instrument 2025 | 2025-09-19
@@ -48,3 +47,4 @@ F2026L01259 | Migration (Complying Entrepreneur Activity—Excluded Activities) 
 F2026L01260 | Migration (Fields of Education) Instrument 2026 | 2026-09-18
 F2026L01261 | Migration Legislation Amendment (Arrangements for Child Visa Applications) Instrument 2026 | 2026-09-19
 F2026L01282 | Migration (Visas that Preclude a Person from Lodging a Student Visa Application in Australia) Instrument 2026 | 2026-09-21
+F2026L01300 | Migration (Arrangements for Maritime Crew Visa Applications) Instrument 2026 | 2026-09-24
