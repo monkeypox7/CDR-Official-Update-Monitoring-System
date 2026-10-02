@@ -1,6 +1,3 @@
-F2025L01205 | Migration (Complying Investments) Instrument 2025 | 2025-09-26
-F2025L01218 | Migration (Disclosure of Information to Prescribed Bodies) Instrument 2025 | 2025-09-30
-F2025L01234 | Migration (Disclosure of Information to Prescribed International Organisations) Instrument 2025 | 2025-09-30
 F2025L01320 | Migration (2026 AFC Women's Asian Cup—Class of Persons for Nil VAC) Instrument 2025 | 2025-10-28
 F2025L01354 | Migration (2027 Men’s Rugby World Cup—Class of Persons for Nil VAC) Instrument 2025 | 2025-11-03
 F2025L01358 | Migration Amendment (Skilled Visa Reform Technical Measures) Instrument 2025 | 2025-11-03
@@ -48,3 +45,6 @@ F2026L01300 | Migration (Arrangements for Maritime Crew Visa Applications) Instr
 F2026L01306 | Migration (Arrangements for eVisitor Visa Applications) Instrument 2026 | 2026-09-24
 F2026L01313 | Migration (Arrangements for Visitor (Class FA) visa applications) Amendment Instrument 2026 | 2026-09-24
 F2026L01315 | Migration (Health Criteria—Specified Countries) Instrument 2026 | 2026-09-24
+F2026L01347 | Migration Amendment (Student Visa Reform) Regulations 2026 | 2026-10-01
+F2026L01348 | Migration (Student Visa Applications to Be Made from outside Australia) Instrument 2026 | 2026-10-01
+F2026L01349 | Migration (LIN 20/158: Class of Persons for Student (Temporary) (Class TU) Visa Applications) Amendment Instrument 2026 | 2026-10-01
