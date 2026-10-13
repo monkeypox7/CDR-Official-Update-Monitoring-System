@@ -74,7 +74,7 @@ Direct Entry stream
 , a skills assessment is required for certain occupations. You must have a positive skills assessment if your occupation is listed on
 IMMI 12/096 Specification of Occupations and Assessing Authorities
 .
-The assessment will show us you have the skills to work in the nominated occupation.The relevant skills assessing authority for these occupations is indicated in the
+The assessment will show us you have the skills to work in the nominated occupation. The relevant skills assessing authority for these occupations is indicated in the
 combined list of eligible skilled occupations
 .
 The skills assessment must clearly show that you have had your skills assessed as suitable by the assessing authority before you make the visa application. Skills assessments can be submitted after the visa application is made but the results of the assessment must have been obtained before the date of your visa application.
@@ -87,7 +87,7 @@ Certain primary SID visa applicants must undertake a mandatory skills assessment
 The following steps apply, when submitting your visa application:
 check that you need a mandatory skills assessment or are eligible for an exemption,
 Skills in Demand visa (subclass 482)
-begin or have completed a skills assessment, within a three year period, before you submit
+begin or have completed a skills assessment, within a three-year period, before you submit
 include the skills assessment reference number to avoid processing delays
 provide evidence of any exemption if you are eligible.
 Note: As part of the application process, we may ask for a skills assessment, even where it is not mandatory. We will request it in writing where this is the case.
