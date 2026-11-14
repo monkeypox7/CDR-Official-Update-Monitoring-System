@@ -1,5 +1,3 @@
-F2025L01389 | Migration Amendment (Skilled Visa Reform Technical Measures) Regulations 2025 | 2025-11-13
-F2025L01422 | Migration (Prohibited Things) Determination 2025 | 2025-11-24
 F2025L01435 | Migration (Arrangements for Protection, Refugee and Humanitarian Visas) Amendment (Expanding Internet Lodgement) Instrument 2025 | 2025-11-25
 F2025L01437 | Migration (Specification of Required Medical Assessment) Instrument 2025 | 2025-11-26
 F2025L01551 | Migration Amendment (2025 Measures No. 1) Regulations 2025 | 2025-12-11
@@ -48,3 +46,5 @@ F2026L01349 | Migration (LIN 20/158: Class of Persons for Student (Temporary) (C
 F2026L01448 | Migration Amendment (2026 Measures No. 1) Regulations 2026 | 2026-10-29
 F2026L01449 | Migration Amendment (Training Visas—Application Requirements) Regulations 2026 | 2026-10-29
 F2026L01466 | Migration Amendment (Referred Stay (Permanent) (Class DH) Visa) Regulations 2026 | 2026-10-29
+F2026L01500 | Migration Amendment (Temporary Graduate Visa Reform) Regulations 2026 | 2026-11-12
+F2026L01503 | Migration Amendment (Preventing Further Stay for Visitor Visas) Regulations 2026 | 2026-11-12
